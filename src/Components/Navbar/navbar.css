@@ -1,0 +1,19 @@
+.AppBar {
+    /* margin: 0 auto; */
+    /* margin-left: 200px; */
+    align-items: center;
+    /* background-color: transparent!important; */
+
+}
+
+.AppBarTitle{
+    display: flex;
+    /* margin-left: 200px; */
+    /* position: absolute; */
+    /* align-self: left; */
+    ;
+}
+
+.AppBarItem{
+    /* padding-left: 20px!important; */
+}

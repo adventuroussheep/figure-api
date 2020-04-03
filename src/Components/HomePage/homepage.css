@@ -1,0 +1,9 @@
+.homePageWrapper{
+    position: absolute;
+    background-image: url("../../Assets/vineyard.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: none;
+    height: 100%;
+    width: 100%;
+}
