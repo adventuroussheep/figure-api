@@ -1,6 +1,6 @@
 import React from 'react';
 import "./navbar.css";
-import { AppBar, Toolbar, IconButton, Button, Typography, MenuIcon, spacing } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Button, Typography, Link } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -22,8 +22,9 @@ const styles = {
   },
   title:{
     position: 'absolute',
+    textShadow: "1px 1px 0 #000",
     top: '38px',
-    left: '5px',
+    left: '25px',
     cursor: 'pointer'
   },
   hover: {
@@ -39,6 +40,7 @@ const styles = {
    },
    login: {
     position: 'absolute',
+    textShadow: "1px 1px 0 #000",
     top: '38px',
     right: '5px'
    }
@@ -58,23 +60,35 @@ function Navbar(props){
       {/* <MenuIcon /> */}
     </IconButton>
     <Typography className={props.classes.title} variant="h6" >
+    <Link href='/' color='inherit' underline='none'>
       FigureApi
+      </Link>
     </Typography>
   <Toolbar>
     <Typography  className={props.classes.hover}>
+    <Link href='/about' color='inherit' underline='none'>
         ABOUT
+        </Link>
     </Typography>
     <Typography className={props.classes.hover}>
+      <Link href='/wines' color='inherit' underline='none'>
         WINES
+      </Link>
     </Typography>
     <Typography className={props.classes.hover} >
+    <Link href='/contact' color='inherit' underline='none'>
         CONTACT
+        </Link>
     </Typography>
     <Typography className={props.classes.hover} >
+    <Link href='/visit' color='inherit' underline='none'>
         VISIT
+        </Link>
     </Typography>
   </Toolbar>
+  <Link href='/' color='inherit' underline='none'>
     <Button className={props.classes.login} color="inherit">Login</Button>
+    </Link>
 </AppBar>
     )
     }

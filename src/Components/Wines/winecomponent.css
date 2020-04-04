@@ -1,0 +1,12 @@
+.headerScroll{
+        position: relative;
+        display: block;
+        height: 70vh;
+        background-image: url("../../Assets/winebarrels.jpg");
+        background-repeat: no-repeat;
+        /* background-size: 100% 70vh; */
+        background-size: cover;
+        background-position: center;
+        /* position: top; */
+        background-attachment: fixed;
+    }
