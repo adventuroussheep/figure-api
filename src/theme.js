@@ -1,10 +1,13 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple';
+import amber from '@material-ui/core/colors/amber';
 import green from '@material-ui/core/colors/green';
+
 
 const theme = createMuiTheme({
   palette: {
-    primary: purple,
+    primary: {
+      main: '#DAA520'
+    } ,
     secondary: green,
   },
   status: {

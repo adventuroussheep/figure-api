@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "./navbar.css";
+import LoginModal from '../LoginReg/Login';
 import {
   AppBar,
   Toolbar,
@@ -13,6 +14,8 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
+
+
 const styles = {
   appbar: {
     backgroundColor: "transparent",
@@ -21,6 +24,7 @@ const styles = {
     width: "100vw",
   },
   title: {
+    color: 'white',
     position: "absolute",
     textShadow: "1px 1px 0 #000",
     top: "38px",
@@ -49,8 +53,6 @@ const styles = {
     bottom: '15px',
     right: '15px',
     zIndex: "1100",
-    // textShadow: "1px 1px 0 #000",
-    // boxShadow: "1px 1px 1px  #f0f0f0",
     border: '1px solid rgba(255, 255, 255, .3)',
     color: 'white'
   },
@@ -61,6 +63,22 @@ function Navbar(props) {
   const theme = useTheme();
   const desktopWidth = useMediaQuery(theme.breakpoints.up("sm"));
   const { classes } = props;
+
+  // Needed for login modal
+  // const [loginState, setLoginState] = React.useState({
+  //   modalState: false,
+  // });
+
+  const [loginState, setLoginState] = useState(false);
+
+  const setModalState = () => {
+    if(loginState == false){
+      console.log(loginState)
+      // return(<LoginModal/>)
+    }   if(loginState == true){
+      setLoginState(false)
+    } 
+  }
 
   // Needed for mobile menu
   const [state, setState] = React.useState({
@@ -75,12 +93,11 @@ function Navbar(props) {
     ) {
       return;
     }
-
     setState({ ...state, [anchor]: open });
   };
 
 
-
+// Mobile Menu
   if (!desktopWidth) {
     return (
       <div>
@@ -109,12 +126,12 @@ function Navbar(props) {
     );
   }
 
+  // Desktop menu
   if (desktopWidth) {
     return (
-      <AppBar className={props.classes.appbar} position="fixed">
+      <AppBar className={props.classes.appbar} position="fixed">         
         {/* <MyButton>asdf</MyButton> */}
         <IconButton edge="start" color="inherit" aria-label="menu">
-          <MenuIcon />
         </IconButton>
 
         <Typography className={props.classes.title} variant="h6">
@@ -144,10 +161,11 @@ function Navbar(props) {
             </Link>
           </Typography>
         </Toolbar>
-        <Link href="/" color="inherit" underline="none">
-          <Button className={props.classes.login} color="inherit">
-            Login
-          </Button>
+        <Link color="inherit" underline="none">
+        <LoginModal className={props.classes.login}/>
+          {/* <Button className={props.classes.login} onClick={() => setModalState()} color="inherit"> */}
+            {/* Login */}
+          {/* </Button> */}
         </Link>
       </AppBar>
     );

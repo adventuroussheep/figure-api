@@ -25,7 +25,6 @@ function WineComponent(props) {
         <div className="headerScroll"></div>
         
 <div className={props.classes.pageContent}>
-    <h1>page content</h1>
 <WineContainer/>
 </div>
     </div>
