@@ -5,6 +5,7 @@ export const url = 'https://hacker-news.firebaseio.com/v0/newstories.json';
 export const newurl = 'https://private-anon-d2fe717142-securecheckout.apiary-mock.com/v1/cart/products/featured'
 
 export const prodUrl = "https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/products/featured";
+
 const APIKey = process.env.REACT_APP_API_KEY;
 
 let config = {
