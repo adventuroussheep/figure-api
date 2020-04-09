@@ -49,11 +49,13 @@ const styles = {
     right: "25px",
   },
   mobileMenuBtn: {
-    position: "absolute",
+    position: "fixed",
+    backgroundColor: 'rgba(0, 0, 0, .3)',
+    boxShadow: '.5px 0px 5px white',
     bottom: '15px',
     right: '15px',
     zIndex: "1100",
-    border: '1px solid rgba(255, 255, 255, .3)',
+    // border: '1px solid rgba(255, 255, 255, .3)',
     color: 'white'
   },
 };
@@ -118,7 +120,7 @@ function Navbar(props) {
               onClose={toggleDrawer(anchor, false)}
               onOpen={toggleDrawer(anchor, true)}
             >
-              <p>Hello try this menu asdfasdfasdf</p>
+              <p>try this menu</p>
             </SwipeableDrawer>
           </React.Fragment>
         ))}

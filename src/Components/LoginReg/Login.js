@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Link, TextField } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button, Link, TextField, Typography } from "@material-ui/core";
+import { makeStyles, responsiveFontSizes } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
@@ -36,10 +36,6 @@ export default function LoginModal() {
   const [open, setOpen] = React.useState(false);
   const [newUser, setNewUser] = React.useState(false);
 
-  const registerUrlMock = `https://private-anon-25c3e5997f-securecheckout.apiary-proxy.com/v1/cart/auth/customer`;
-
-  const registerUrl = `https://api.securecheckout.com/v1/cart/auth/customer`;
-
   // Open and close for modal
   const handleOpen = () => {
     setOpen(true);
@@ -66,35 +62,37 @@ export default function LoginModal() {
 
   // Gets input field values and sets to state
   const changeHandler = (event) => {
-    setCustomerSignUp({ ...customerSignUp, [event.target.name]: event.target.value });
+    setCustomerSignUp({
+      ...customerSignUp,
+      [event.target.name]: event.target.value,
+    });
   };
 
+  // API Information
   const APIKey = process.env.REACT_APP_API_KEY;
+
+  const registerUrlDebug = `https://private-anon-25c3e5997f-securecheckout.apiary-proxy.com/v1/cart/auth/customer`;
+
+  const registerUrl = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/customer`;
 
   let config = {
     headers: {
-        "Content-Type" : "application/json",
-        "X-Auth-Token" : APIKey,
-        "X-Sesion-Id" : "234523452345"
-    }
-};
+      "Content-Type": "application/json",
+      "X-Auth-Token": APIKey,
+      "X-Sesion-Id": "12344321",
+    },
+  };
 
-
-
-
-  const ApiRegister = async () =>{
-
-    // const ApiCall = async () =>{
-      const result = await axios.get(registerUrlMock, config).then(( data ) => data);
-      // return result;
-  // }
-
-
-    axios.post(registerUrlMock, customerSignUp).then(( data ) => data);
-    console.log(result)
-    // return result;
-}
-
+  const ApiRegister = async () => {
+    axios
+      .post(registerUrl, customerSignUp, config)
+      .then((res) => {
+        console.log("RESPONSE RECEIVED: ", res);
+      })
+      .catch((err) => {
+        console.log("AXIOS ERROR: ", err);
+      });
+  };
 
   // Renders register modal
   {
@@ -118,21 +116,47 @@ export default function LoginModal() {
           >
             <Fade in={open}>
               <div className={classes.paper}>
-                <h2 id="transition-modal-title">Register</h2>
+                <Typography
+                  style={{ fontSize: "40px" }}
+                  id="transition-modal-title"
+                >
+                  Register
+                </Typography>
                 <form>
-                <TextField id="outlined-basic" name="first_name"
-                onChange={changeHandler} label="First Name" />
-                <br/>
-                <TextField id="outlined-basic" name="last_name" 
-               onChange={changeHandler} label="Last Name" />
-                <br/>
-                  <TextField id="outlined-basic" name="username" onChange={changeHandler}  label="Email Address/Username" />
-                  <br/>
-                  <TextField id="outlined-basic" name="password"
-                  onChange={changeHandler} label="Password" />
-                  <br/>
-                  <TextField id="outlined-basic" name="state"
-                  onChange={changeHandler} label="State" />
+                  <TextField
+                    id="outlined-basic"
+                    name="first_name"
+                    onChange={changeHandler}
+                    label="First Name"
+                  />
+                  <br />
+                  <TextField
+                    id="outlined-basic"
+                    name="last_name"
+                    onChange={changeHandler}
+                    label="Last Name"
+                  />
+                  <br />
+                  <TextField
+                    id="outlined-basic"
+                    name="username"
+                    onChange={changeHandler}
+                    label="Email Address/Username"
+                  />
+                  <br />
+                  <TextField
+                    id="outlined-basic"
+                    name="password"
+                    onChange={changeHandler}
+                    label="Password"
+                  />
+                  <br />
+                  <TextField
+                    id="outlined-basic"
+                    name="state"
+                    onChange={changeHandler}
+                    label="State"
+                  />
                 </form>
                 <Button>REGISTER</Button>
                 <Button onClick={ApiRegister}>Login</Button>
@@ -144,16 +168,6 @@ export default function LoginModal() {
     }
   }
 
-
-
-
-
-
-
-
-
-
-  
   // Renders Login Modal
   {
     if (!newUser) {
@@ -176,7 +190,12 @@ export default function LoginModal() {
           >
             <Fade in={open}>
               <div className={classes.paper}>
-                <h2 id="transition-modal-title">Sign In</h2>
+                <Typography
+                  style={{ fontSize: "40px" }}
+                  id="transition-modal-title"
+                >
+                  Sign In
+                </Typography>
                 <p>
                   Cupidatat sit ea esse officia duis dolore exercitation ullamco
                   ullamco enim veniam mollit sint non. Cupidatat eiusmod eiusmod
