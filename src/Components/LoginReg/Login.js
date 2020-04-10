@@ -29,6 +29,11 @@ const useStyles = makeStyles((theme) => ({
     top: "38px",
     right: "25px",
   },
+  registerBtn: {
+    display: 'flex',
+    margin: '0 auto',
+    marginTop: '5px'
+  }
 }));
 
 export default function LoginModal() {
@@ -72,8 +77,10 @@ export default function LoginModal() {
   const APIKey = process.env.REACT_APP_API_KEY;
 
   const registerUrlDebug = `https://private-anon-25c3e5997f-securecheckout.apiary-proxy.com/v1/cart/auth/customer`;
-
   const registerUrl = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/customer`;
+
+  const usernameUrlDebug = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth/username/`;
+  const usernameUrl = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth/username/`;
 
   let config = {
     headers: {
@@ -83,16 +90,29 @@ export default function LoginModal() {
     },
   };
 
+
+  // Checks if username exists, otherwise creates an account
   const ApiRegister = async () => {
-    axios
-      .post(registerUrl, customerSignUp, config)
-      .then((res) => {
-        console.log("RESPONSE RECEIVED: ", res);
-      })
-      .catch((err) => {
-        console.log("AXIOS ERROR: ", err);
-      });
-  };
+    await axios.get(usernameUrlDebug, config).then(( data ) =>{
+     if(data.data == false){
+      alert("name is avaliable")
+      axios
+        .post(registerUrl, customerSignUp, config)
+        .then((res) => {
+          console.log("RESPONSE RECEIVED: ", res);
+        })
+        .catch((err) => {
+          console.log("AXIOS ERROR: ", err);
+        });
+      
+    }
+    else{
+      alert("Email or Username already exists.")
+    }
+  }
+  )
+};
+    
 
   // Renders register modal
   {
@@ -122,8 +142,9 @@ export default function LoginModal() {
                 >
                   Register
                 </Typography>
-                <form>
+                <form onSubmit={ApiRegister}>
                   <TextField
+                  required
                     id="outlined-basic"
                     name="first_name"
                     onChange={changeHandler}
@@ -131,6 +152,7 @@ export default function LoginModal() {
                   />
                   <br />
                   <TextField
+                  required
                     id="outlined-basic"
                     name="last_name"
                     onChange={changeHandler}
@@ -138,6 +160,7 @@ export default function LoginModal() {
                   />
                   <br />
                   <TextField
+                  required
                     id="outlined-basic"
                     name="username"
                     onChange={changeHandler}
@@ -145,21 +168,24 @@ export default function LoginModal() {
                   />
                   <br />
                   <TextField
-                    id="outlined-basic"
+                  required
+                  id="standard-password-input"
                     name="password"
+                    type="password"
                     onChange={changeHandler}
                     label="Password"
+                  
                   />
                   <br />
                   <TextField
+                  required
                     id="outlined-basic"
                     name="state"
                     onChange={changeHandler}
                     label="State"
                   />
+                <Button className={classes.registerBtn} type="submit">REGISTER</Button>
                 </form>
-                <Button>REGISTER</Button>
-                <Button onClick={ApiRegister}>Login</Button>
               </div>
             </Fade>
           </Modal>
