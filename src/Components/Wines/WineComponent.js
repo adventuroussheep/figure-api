@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import WineContainer from "./WineContainer";
 import { withStyles } from "@material-ui/core/styles";
 import "./winecomponent.css";
@@ -17,7 +17,7 @@ const styles = {
 };
 
 function WineComponent(props) {
-  const { classes } = props;
+  // const { classes } = props;
 
   return (
     <div className="winePageWrapper">

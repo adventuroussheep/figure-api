@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Link, TextField, Typography } from "@material-ui/core";
-import { makeStyles, responsiveFontSizes } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import { render } from "@testing-library/react";
+
 
 // For styling
 const useStyles = makeStyles((theme) => ({
@@ -56,7 +56,7 @@ export default function LoginModal() {
     setNewUser(true);
   };
 
-  // Used to get Register Form state
+  // Used to create Register Form state
   const [customerSignUp, setCustomerSignUp] = useState({
     first_name: "",
     last_name: "",
@@ -65,13 +65,29 @@ export default function LoginModal() {
     state: "",
   });
 
-  // Gets input field values and sets to state
+  // Gets input field values and sets to register state
   const changeHandler = (event) => {
     setCustomerSignUp({
       ...customerSignUp,
       [event.target.name]: event.target.value,
     });
   };
+
+
+  // Used to create Login Form state
+  const [userLogin, setUserLogin] = useState({
+    username: "",
+    password: "",
+  });
+
+  // Gets login inputs and sets login state
+  const changeHandlerLogin = (event) => {
+    setUserLogin({
+      ...userLogin,
+      [event.target.name]: event.target.value,
+    });
+  };
+
 
   // API Information
   const APIKey = process.env.REACT_APP_API_KEY;
@@ -80,7 +96,12 @@ export default function LoginModal() {
   const registerUrl = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/customer`;
 
   const usernameUrlDebug = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth/username/`;
-  const usernameUrl = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth/username/`;
+  const usernameUrl = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/username/username`;
+
+
+  const authUserDebug = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth`;
+  const authUser = `https://api.securecheckout.com/v1/cart/auth`;
+
 
   let config = {
     headers: {
@@ -92,9 +113,11 @@ export default function LoginModal() {
 
 
   // Checks if username exists, otherwise creates an account
-  const ApiRegister = async () => {
-    await axios.get(usernameUrlDebug, config).then(( data ) =>{
+  const ApiRegister = async (event) => {
+    event.preventDefault();
+    await axios.get(usernameUrl, config).then(( data ) =>{
      if(data.data == false){
+       console.log(data.data)
       alert("name is avaliable")
       axios
         .post(registerUrl, customerSignUp, config)
@@ -104,13 +127,35 @@ export default function LoginModal() {
         .catch((err) => {
           console.log("AXIOS ERROR: ", err);
         });
-      
     }
     else{
       alert("Email or Username already exists.")
     }
   }
   )
+};
+
+
+const ApiLogin = async (event) => {
+  event.preventDefault();
+  await axios.get(usernameUrl, config).then(( data ) =>{
+   if(data.data == false){
+     console.log(data.data)
+    alert("Username or Email does not exist")
+    axios
+      .post(registerUrl, customerSignUp, config)
+      .then((res) => {
+        console.log("RESPONSE RECEIVED: ", res);
+      })
+      .catch((err) => {
+        console.log("AXIOS ERROR: ", err);
+      });
+  }
+  else{
+    alert("Email or Username already exists.")
+  }
+}
+)
 };
     
 
@@ -184,7 +229,7 @@ export default function LoginModal() {
                     onChange={changeHandler}
                     label="State"
                   />
-                <Button className={classes.registerBtn} type="submit">REGISTER</Button>
+                <Button className={classes.registerBtn}  type="submit">REGISTER</Button>
                 </form>
               </div>
             </Fade>
@@ -229,15 +274,21 @@ export default function LoginModal() {
                   commodo consequat consectetur laboris ex dolore nisi ea sunt
                   quis nostrud nisi voluptate id.
                 </p>
-                <form>
-                  <TextField id="outlined-basic" label="Email Address" />
+                <form onSubmit={ApiLogin}>
+                  <TextField id="outlined-basic" 
+                  name="username"
+                  onChange={changeHandlerLogin}
+                  label="Email Address/Username"/>
                   <br></br>
-                  <TextField id="outlined-basic" label="Password" />
+                  <TextField id="outlined-basic" 
+                  name="password"
+                  onChange={changeHandlerLogin}
+                  label="Password" />
+                <Button className={classes.registerBtn} type="submit">Sign In</Button>
                 </form>
-                <Button>Sign In</Button>
                 <span>
                   New Here?
-                  <Link onClick={registerBtn}>SIGN UP</Link>
+                  <Link onClick={registerBtn}> SIGN UP</Link>
                 </span>
               </div>
             </Fade>

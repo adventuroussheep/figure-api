@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Navbar from './Components/Navbar/Navbar';
 import HomePage from './Components/HomePage/HomePage';
 import Wines from './Components/Wines/WineComponent';
-import Random from './Components/RandomComp/random';
+// import Random from './Components/RandomComp/random';
 
 class Router extends Component {
   render() {
