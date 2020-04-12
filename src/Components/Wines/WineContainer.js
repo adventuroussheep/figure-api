@@ -10,10 +10,12 @@ import {
   CardMedia,
   Typography,
   Button,
+  CircularProgress,
 } from "@material-ui/core";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import { Select, InputLabel } from "@material-ui/core/";
+import { render } from "@testing-library/react";
 
 const styles = {
   card: {
@@ -22,7 +24,6 @@ const styles = {
     float: "left",
     margin: "20px 20px",
   },
-  descDiv: {},
   desc: {
     width: "70%",
     // marginRight: '10px',
@@ -48,6 +49,13 @@ const styles = {
   mobileButtons: {
     margin: "0 auto",
   },
+  loading: {
+    position: 'absolute',
+    marginLeft: "48vw",
+    marginTop: "-5vh",
+    textAlign: "center",
+    zIndex: '1200'
+  },
 };
 
 // API information for customer Cart
@@ -62,21 +70,12 @@ let config = {
   },
 };
 
-const ApiAddToCart = async () => {
-  // axios
-  // .post(AddToCartUrl, config)
-  // .then((res) => {
-  //   console.log("RESPONSE RECEIVED: ", res);
-  // })
-  // .catch((err) => {
-  //   console.log("AXIOS ERROR: ", err);
-  // });
-  // const result = await axios.get(currentProdUrl, config).then(( data ) => data);
-  // return result;
-};
+
 
 function WineContainer(props) {
   // Creates a state for the API results to be set to, if no results the values are set to an empty array.
+  const [isLoading, setIsLoading] = useState(true);
+  const [count, setCount] = useState(0);
   const [containerState, setContainerState] = useState([]);
   var resultArr = [];
 
@@ -92,7 +91,38 @@ function WineContainer(props) {
       ...cartState,
       quantity: event.target.value,
     });
-    setQuantityDisplay(event.target.value);
+    // setQuantityDisplay(event.target.value);
+  };
+
+
+  // When the Add To Cart Button is pressed useEffect waits for the count state to change before running the API Call. This prevents the API Call from running before the state has been updated
+  useEffect(() => {
+      ApiAddToCart()
+  }, [count]);
+
+
+  // API Post for cart items
+  const ApiAddToCart = async () => {
+    if (cartState.sku !== '' && cartState.quantity !== ''){
+    console.log(cartState)
+    await axios
+    .post(AddToCartUrl, cartState, config)
+    .then((res) => {
+      console.log("RESPONSE RECEIVED: ", res);
+      setCartState({
+        ...cartState,
+        quantity: '',
+        sku: ''
+      });
+    })
+    .catch((err) => {
+      console.log("AXIOS ERROR: ", err);
+    });
+  } if (cartState.sku !== '' && cartState.quantity === ''){
+    alert("please select a quantity")
+  }
+    // const result = await axios.get(currentProdUrl, config).then(( data ) => data);
+    // return result;
   };
 
   //
@@ -104,7 +134,6 @@ function WineContainer(props) {
   const desktopWidth = useMediaQuery(theme.breakpoints.up("sm"));
 
   // On page load WineCall.js is run and the api data is set to the setContainerState which can be accessed via containerState
-  // You can add a value to [] that useEffect will listen for, if [var] changes useEffect will run again
   useEffect(() => {
     ApiCall().then((data) => setContainerState(data));
   }, []);
@@ -115,26 +144,30 @@ function WineContainer(props) {
       resultArr.push([i, containerState.data[i]]);
     }
     // console.log(resultArr);
-
+    
     // Desktop Render
+  
     if (desktopWidth) {
       return (
         <div>
-          {resultArr.map(function (item, index) {
+          {resultArr.slice(0,20).map(function (item, index) {
+          // {resultArr.map(function (item, index) {
             return (
-              <Card key={index} className={props.classes.card}>
+              <Card key={index} className={props.classes.card} alt="Card Container">
                 <CardActionArea>
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                       {item[1].name}
                     </Typography>
 
-                    <div className={props.classes.descDiv}>
-                      <CardMedia
+                    <div> 
+                      {/* Source of console error: Failed prop type, image needs a require or onError */}
+                        <CardMedia 
                         className={props.classes.media}
-                        image={item[1].image}
+                        image={item[1].image || null}
                         alt="Wine Image"
                         title="Contemplative Reptile"
+                        style={styles.media}
                       />
                       <Typography
                         className={props.classes.desc}
@@ -157,12 +190,8 @@ function WineContainer(props) {
                   <InputLabel htmlFor="age-native-simple">Quantity</InputLabel>
                   <Select
                     native
-                    value={quantityDisplay}
+                    // value={quantityDisplay}
                     onChange={changeHandlerQuantity}
-                    // inputProps={{
-                    //   name: 'Quantity',
-                    //   id: 'age-native-simple',
-                    // }}
                   >
                     <option aria-label="None" value="" />
                     <option value={1}>1</option>
@@ -182,8 +211,9 @@ function WineContainer(props) {
                         ...cartState,
                         sku: item[1].sku,
                       });
-
-                      console.log(cartState);
+                      setCount(count + 1);
+                        console.log(count);
+                      // ApiAddToCart()
                     }}
                     size="small"
                     color="secondary"
@@ -245,8 +275,9 @@ function WineContainer(props) {
           })}
         </div>
       );
-    }
-  }
+    } 
+  } 
+
 }
 
 export default withStyles(styles)(WineContainer);

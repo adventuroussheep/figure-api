@@ -131,7 +131,7 @@ function Navbar(props) {
   // Desktop menu
   if (desktopWidth) {
     return (
-      <AppBar className={props.classes.appbar} position="fixed">         
+      <AppBar className={props.classes.appbar} position="absolute">         
         {/* <MyButton>asdf</MyButton> */}
         <IconButton edge="start" color="inherit" aria-label="menu">
         </IconButton>

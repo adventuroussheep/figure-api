@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     margin: '0 auto',
     marginTop: '5px'
+  },
+  signupBtn: {
+    cursor: "pointer"
   }
 }));
 
@@ -102,6 +105,8 @@ export default function LoginModal() {
   const authUserDebug = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth`;
   const authUser = `https://api.securecheckout.com/v1/cart/auth`;
 
+  const createSessionProd = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/session`;
+  const createSesionMock = `https://cors-anywhere.herokuapp.com/https://private-anon-b3a7a3c57a-securecheckout.apiary-mock.com/v1/cart/auth/session`;
 
   let config = {
     headers: {
@@ -116,13 +121,16 @@ export default function LoginModal() {
   const ApiRegister = async (event) => {
     event.preventDefault();
     await axios.get(usernameUrl, config).then(( data ) =>{
-     if(data.data == false){
+     if(data.data === false){
        console.log(data.data)
+       console.log(customerSignUp)
       alert("name is avaliable")
       axios
         .post(registerUrl, customerSignUp, config)
         .then((res) => {
           console.log("RESPONSE RECEIVED: ", res);
+          alert("Registered Successfully")
+          handleClose();
         })
         .catch((err) => {
           console.log("AXIOS ERROR: ", err);
@@ -135,15 +143,28 @@ export default function LoginModal() {
   )
 };
 
-
+// API Call for user login
 const ApiLogin = async (event) => {
   event.preventDefault();
+
+// Creates user session token
+     axios
+       .post(createSesionMock, config)
+       .then((res) => {
+         console.log("RESPONSE RECEIVED: ", res);
+         alert("session created")
+       })
+       .catch((err) => {
+         console.log("AXIOS ERROR: ", err);
+       });
+   
+
+// Checks if username exists
   await axios.get(usernameUrl, config).then(( data ) =>{
-   if(data.data == false){
+   if(data.data === true){
      console.log(data.data)
-    alert("Username or Email does not exist")
     axios
-      .post(registerUrl, customerSignUp, config)
+      .post(registerUrl, userLogin, config)
       .then((res) => {
         console.log("RESPONSE RECEIVED: ", res);
       })
@@ -152,7 +173,7 @@ const ApiLogin = async (event) => {
       });
   }
   else{
-    alert("Email or Username already exists.")
+    alert("Username or Email does not exist")
   }
 }
 )
@@ -275,12 +296,16 @@ const ApiLogin = async (event) => {
                   quis nostrud nisi voluptate id.
                 </p>
                 <form onSubmit={ApiLogin}>
-                  <TextField id="outlined-basic" 
+                  <TextField 
+                  required
+                  id="outlined-basic" 
                   name="username"
                   onChange={changeHandlerLogin}
                   label="Email Address/Username"/>
                   <br></br>
-                  <TextField id="outlined-basic" 
+                  <TextField 
+                  required
+                  id="outlined-basic" 
                   name="password"
                   onChange={changeHandlerLogin}
                   label="Password" />
@@ -288,7 +313,7 @@ const ApiLogin = async (event) => {
                 </form>
                 <span>
                   New Here?
-                  <Link onClick={registerBtn}> SIGN UP</Link>
+                  <Link className={classes.signupBtn} onClick={registerBtn}> SIGN UP</Link>
                 </span>
               </div>
             </Fade>
