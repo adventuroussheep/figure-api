@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/figure-api/static/css/main.3b4442f1.chunk.css",
+    "main.js": "/figure-api/static/js/main.85c1b3b3.chunk.js",
+    "main.js.map": "/figure-api/static/js/main.85c1b3b3.chunk.js.map",
+    "runtime-main.js": "/figure-api/static/js/runtime-main.4a489394.js",
+    "runtime-main.js.map": "/figure-api/static/js/runtime-main.4a489394.js.map",
+    "static/js/2.a7d9e64b.chunk.js": "/figure-api/static/js/2.a7d9e64b.chunk.js",
+    "static/js/2.a7d9e64b.chunk.js.map": "/figure-api/static/js/2.a7d9e64b.chunk.js.map",
+    "index.html": "/figure-api/index.html",
+    "precache-manifest.9b61bf8f5976533bcd4e5866ae8993b9.js": "/figure-api/precache-manifest.9b61bf8f5976533bcd4e5866ae8993b9.js",
+    "service-worker.js": "/figure-api/service-worker.js",
+    "static/css/main.3b4442f1.chunk.css.map": "/figure-api/static/css/main.3b4442f1.chunk.css.map",
+    "static/js/2.a7d9e64b.chunk.js.LICENSE.txt": "/figure-api/static/js/2.a7d9e64b.chunk.js.LICENSE.txt",
+    "static/media/homepage.css": "/figure-api/static/media/vineyard.48dd9661.jpg",
+    "static/media/winecomponent.css": "/figure-api/static/media/winebarrels.88d58c1a.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4a489394.js",
+    "static/js/2.a7d9e64b.chunk.js",
+    "static/css/main.3b4442f1.chunk.css",
+    "static/js/main.85c1b3b3.chunk.js"
+  ]
+}
