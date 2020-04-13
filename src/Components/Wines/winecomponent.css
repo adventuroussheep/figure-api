@@ -2,7 +2,8 @@
         position: relative;
         display: block;
         height: 70vh;
-        background-image: url("../../Assets/winebarrels.jpg");
+        /* background-image: url("../../Assets/winebottles.jpg"); */
+        background: linear-gradient( rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) ), url('../../Assets/winebottles.jpg');
         background-repeat: no-repeat;
         /* background-size: 100% 70vh; */
         background-size: cover;

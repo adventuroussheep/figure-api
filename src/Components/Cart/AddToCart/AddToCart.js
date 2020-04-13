@@ -1,5 +1,5 @@
 import React from "react";
-import axios from 'axios';
+// import axios from 'axios';
 import { Button } from "@material-ui/core";
 
 
@@ -9,13 +9,13 @@ export const prodUrl = "https://api.securecheckout.com/v1/cart/items";
 
 const APIKey = process.env.REACT_APP_API_KEY;
 
-let config = {
-    headers: {
-        "Content-Type" : "application/json",
-        "X-Auth-Token" : APIKey,
-        "X-Sesion-Id" : "234523452345"
-    }
-};
+// let config = {
+//     headers: {
+//         "Content-Type" : "application/json",
+//         "X-Auth-Token" : APIKey,
+//         "X-Sesion-Id" : "234523452345"
+//     }
+// };
 
 
 const ApiAddToCart = async () =>{

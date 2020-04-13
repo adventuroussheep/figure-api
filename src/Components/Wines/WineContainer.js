@@ -15,14 +15,13 @@ import {
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import { Select, InputLabel } from "@material-ui/core/";
-import { render } from "@testing-library/react";
 
 const styles = {
   card: {
     minWidth: "90vw",
     maxWidth: "90vw",
-    float: "left",
-    margin: "20px 20px",
+    // float: "left",
+    margin: "25px auto",
   },
   desc: {
     width: "70%",
@@ -50,9 +49,9 @@ const styles = {
     margin: "0 auto",
   },
   loading: {
-    position: 'absolute',
-    marginLeft: "48vw",
-    marginTop: "-5vh",
+    position: 'relative',
+    margin: "0 auto",
+    marginTop: "-10vh",
     textAlign: "center",
     zIndex: '1200'
   },
@@ -74,7 +73,6 @@ let config = {
 
 function WineContainer(props) {
   // Creates a state for the API results to be set to, if no results the values are set to an empty array.
-  const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [containerState, setContainerState] = useState([]);
   var resultArr = [];
@@ -91,11 +89,10 @@ function WineContainer(props) {
       ...cartState,
       quantity: event.target.value,
     });
-    // setQuantityDisplay(event.target.value);
   };
 
 
-  // When the Add To Cart Button is pressed useEffect waits for the count state to change before running the API Call. This prevents the API Call from running before the state has been updated
+  // When the Add To Cart Button is pressed useEffect waits for the count state to change before running the API Call. This prevents the API Call from running before the state has been updated which causes 400 errors
   useEffect(() => {
       ApiAddToCart()
   }, [count]);
@@ -121,15 +118,11 @@ function WineContainer(props) {
   } if (cartState.sku !== '' && cartState.quantity === ''){
     alert("please select a quantity")
   }
-    // const result = await axios.get(currentProdUrl, config).then(( data ) => data);
-    // return result;
   };
 
-  //
-  const [quantityDisplay, setQuantityDisplay] = React.useState("");
 
   // Styles and Media Queries
-  const { classes } = props;
+  // const { classes } = props;
   const theme = useTheme();
   const desktopWidth = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -138,15 +131,28 @@ function WineContainer(props) {
     ApiCall().then((data) => setContainerState(data));
   }, []);
 
+
+
+
+
   // Pushes JSON objects into an empty array converting them into array items
   if (containerState) {
     for (var i in containerState.data) {
       resultArr.push([i, containerState.data[i]]);
     }
-    // console.log(resultArr);
+    
+    if (containerState.length < 1){
+      return (
+       <div className={props.classes.loading}>
+         <CircularProgress size={100}></CircularProgress>
+       </div>
+      
+      )
+    }
+
+    
     
     // Desktop Render
-  
     if (desktopWidth) {
       return (
         <div>
@@ -212,8 +218,6 @@ function WineContainer(props) {
                         sku: item[1].sku,
                       });
                       setCount(count + 1);
-                        console.log(count);
-                      // ApiAddToCart()
                     }}
                     size="small"
                     color="secondary"

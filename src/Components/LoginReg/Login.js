@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Button, Link, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -95,17 +95,17 @@ export default function LoginModal() {
   // API Information
   const APIKey = process.env.REACT_APP_API_KEY;
 
-  const registerUrlDebug = `https://private-anon-25c3e5997f-securecheckout.apiary-proxy.com/v1/cart/auth/customer`;
+  // const registerUrlDebug = `https://private-anon-25c3e5997f-securecheckout.apiary-proxy.com/v1/cart/auth/customer`;
   const registerUrl = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/customer`;
 
-  const usernameUrlDebug = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth/username/`;
+  // const usernameUrlDebug = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth/username/`;
   const usernameUrl = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/username/username`;
 
 
-  const authUserDebug = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth`;
-  const authUser = `https://api.securecheckout.com/v1/cart/auth`;
+  // const authUserDebug = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth`;
+  // const authUser = `https://api.securecheckout.com/v1/cart/auth`;
 
-  const createSessionProd = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/session`;
+  // const createSessionProd = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/session`;
   const createSesionMock = `https://cors-anywhere.herokuapp.com/https://private-anon-b3a7a3c57a-securecheckout.apiary-mock.com/v1/cart/auth/session`;
 
   let config = {

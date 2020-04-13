@@ -1,7 +1,12 @@
 {
   "name": "react-boilerplate",
   "version": "0.1.0",
+  "homepage": "https://adventuroussheep.github.io/figure-api/",
   "private": true,
+  "devDependencies": {
+    "gh-pages": "^2.2.0",
+    "react-scripts": "3.4.1"
+  },
   "dependencies": {
     "@material-ui/core": "^4.9.8",
     "@material-ui/icons": "^4.9.1",
@@ -11,6 +16,7 @@
     "axios": "^0.19.2",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "gh-pages": "^2.2.0",
     "material-ui-icons": "^1.0.0-beta.36",
     "mysql": "^2.18.1",
     "react": "^16.13.1",
@@ -20,6 +26,8 @@
     "save": "^2.4.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

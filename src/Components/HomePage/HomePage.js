@@ -1,6 +1,6 @@
 import React from 'react';
 // import { ThemeProvider } from '@material-ui/core/styles';
-import { Button, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 // import APICall from '../../Api/ApiCall';
 // import APIContainer from '../../Api/ApiContainer';
 import { withStyles } from '@material-ui/core/styles';
@@ -20,7 +20,7 @@ const styles = {
 };
 
 function HomePage(props) {
-  const { classes } = props;
+  // const { classes } = props;
   return (
     <div className="homePageWrapper">
         <Typography className={props.classes.homeTitle}>From the Vine</Typography>

@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import "./navbar.css";
 import LoginModal from '../LoginReg/Login';
 import {
   AppBar,
   Toolbar,
   IconButton,
-  Button,
   Typography,
-  Link,
   SwipeableDrawer,
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -64,23 +63,22 @@ function Navbar(props) {
   
   const theme = useTheme();
   const desktopWidth = useMediaQuery(theme.breakpoints.up("sm"));
-  const { classes } = props;
+  // const { classes } = props;
 
   // Needed for login modal
   // const [loginState, setLoginState] = React.useState({
   //   modalState: false,
   // });
 
-  const [loginState, setLoginState] = useState(false);
 
-  const setModalState = () => {
-    if(loginState == false){
-      console.log(loginState)
-      // return(<LoginModal/>)
-    }   if(loginState == true){
-      setLoginState(false)
-    } 
-  }
+  // const setModalState = () => {
+  //   if(loginState === false){
+  //     console.log(loginState)
+  //     // return(<LoginModal/>)
+  //   }   if(loginState === true){
+  //     setLoginState(false)
+  //   } 
+  // }
 
   // Needed for mobile menu
   const [state, setState] = React.useState({
@@ -136,39 +134,39 @@ function Navbar(props) {
         <IconButton edge="start" color="inherit" aria-label="menu">
         </IconButton>
 
+          <Link to="/" color="inherit" underline="none" style={{ textDecoration: 'none' }}>
         <Typography className={props.classes.title} variant="h6">
-          <Link href="/" color="inherit" underline="none">
             FigureApi
-          </Link>
         </Typography>
+          </Link>
         <Toolbar>
+            <Link to="/about" color="inherit" underline="none" style={{ textDecoration: 'none' }}>
           <Typography className={props.classes.hover}>
-            <Link href="/about" color="inherit" underline="none">
               ABOUT
-            </Link>
           </Typography>
+            </Link>
+            <Link to="/wines" color="inherit" underline="none" style={{ textDecoration: 'none' }}>
           <Typography className={props.classes.hover}>
-            <Link href="/wines" color="inherit" underline="none">
               WINES
-            </Link>
           </Typography>
+            </Link>
+            <Link to="/contact" color="inherit" underline="none" style={{ textDecoration: 'none' }}>
           <Typography className={props.classes.hover}>
-            <Link href="/contact" color="inherit" underline="none">
               CONTACT
-            </Link>
           </Typography>
+            </Link>
+            <Link to="/visit" color="inherit" underline="none" style={{ textDecoration: 'none' }}>
           <Typography className={props.classes.hover}>
-            <Link href="/visit" color="inherit" underline="none">
               VISIT
-            </Link>
           </Typography>
+            </Link>
         </Toolbar>
-        <Link color="inherit" underline="none">
+        {/* <Link color="inherit" underline="none"> */}
         <LoginModal className={props.classes.login}/>
           {/* <Button className={props.classes.login} onClick={() => setModalState()} color="inherit"> */}
             {/* Login */}
           {/* </Button> */}
-        </Link>
+        {/* </Link> */}
       </AppBar>
     );
   }
