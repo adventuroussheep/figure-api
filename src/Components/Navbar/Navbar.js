@@ -55,25 +55,10 @@ const styles = {
 };
 
 function Navbar(props) {
-  
   const theme = useTheme();
   const desktopWidth = useMediaQuery(theme.breakpoints.up("sm"));
-  // const { classes } = props;
 
-  // Needed for login modal
-  // const [loginState, setLoginState] = React.useState({
-  //   modalState: false,
-  // });
-
-
-  // const setModalState = () => {
-  //   if(loginState === false){
-  //     console.log(loginState)
-  //     // return(<LoginModal/>)
-  //   }   if(loginState === true){
-  //     setLoginState(false)
-  //   } 
-  // }
+  const isSessionToken = sessionStorage.getItem("sessionToken");
 
   // Needed for mobile menu
   const [state, setState] = React.useState({
@@ -122,13 +107,13 @@ function Navbar(props) {
   }
 
   // Desktop menu
-  if (desktopWidth) {
+  if (desktopWidth && isSessionToken) {
     return (
       <AppBar className={props.classes.appbar} position="absolute">         
         {/* <MyButton>asdf</MyButton> */}
         <IconButton edge="start" color="inherit" aria-label="menu">
         </IconButton>
-
+    <Typography> asdfasdf{isSessionToken}</Typography>
           <Link to="/" color="inherit" underline="none" style={{ textDecoration: 'none' }}>
         <Typography className={props.classes.title} variant="h6">
             FigureApi
@@ -157,11 +142,39 @@ function Navbar(props) {
             </Link>
         </Toolbar>
         {/* <Link color="inherit" underline="none"> */}
+        
         <Logout />
         <LoginModal/>
       </AppBar>
     );
   }
+
+
+    // Desktop menu Not Logged in
+    if (desktopWidth && !isSessionToken) {
+      return (
+        <AppBar className={props.classes.appbar} position="absolute">         
+          {/* <MyButton>asdf</MyButton> */}
+          <IconButton edge="start" color="inherit" aria-label="menu">
+          </IconButton>
+      <Typography> asdfasdf{isSessionToken}</Typography>
+            <Link to="/" color="inherit" underline="none" style={{ textDecoration: 'none' }}>
+          <Typography className={props.classes.title} variant="h6">
+              FigureApi
+          </Typography>
+            </Link>
+          <Toolbar>
+          </Toolbar>
+          {/* <Link color="inherit" underline="none"> */}
+          
+          <Logout />
+          <LoginModal/>
+        </AppBar>
+      );
+    }
+
+
+
 }
 // }
 
