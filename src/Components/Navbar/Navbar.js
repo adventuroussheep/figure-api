@@ -1,6 +1,7 @@
 import React from "react";
 import "./navbar.css";
 import LoginModal from '../LoginReg/Login';
+import Logout from '../Logout/Logout';
 import {
   AppBar,
   Toolbar,
@@ -40,12 +41,6 @@ const styles = {
       color: "#DAA520",
       cursor: "pointer",
     },
-  },
-  login: {
-    position: "absolute",
-    textShadow: "1px 1px 0 #000",
-    top: "38px",
-    right: "25px",
   },
   mobileMenuBtn: {
     position: "fixed",
@@ -162,11 +157,8 @@ function Navbar(props) {
             </Link>
         </Toolbar>
         {/* <Link color="inherit" underline="none"> */}
-        <LoginModal className={props.classes.login}/>
-          {/* <Button className={props.classes.login} onClick={() => setModalState()} color="inherit"> */}
-            {/* Login */}
-          {/* </Button> */}
-        {/* </Link> */}
+        <Logout />
+        <LoginModal/>
       </AppBar>
     );
   }

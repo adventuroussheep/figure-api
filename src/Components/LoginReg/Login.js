@@ -152,6 +152,8 @@ export default function LoginModal() {
           .then((res) => {
             console.log("RESPONSE RECEIVED: ", res);
             alert("session created");
+            // Sets token in session storage
+            sessionStorage.setItem("sessionToken", res.data)
           })
           .catch((err) => {
             console.log("AXIOS ERROR: ", err);
@@ -163,7 +165,7 @@ export default function LoginModal() {
       });
   };
 
-  
+
   // Renders register modal
   {
     if (newUser) {
