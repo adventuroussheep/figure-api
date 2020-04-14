@@ -6,7 +6,6 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 
-
 // For styling
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -30,13 +29,13 @@ const useStyles = makeStyles((theme) => ({
     right: "25px",
   },
   registerBtn: {
-    display: 'flex',
-    margin: '0 auto',
-    marginTop: '5px'
+    display: "flex",
+    margin: "0 auto",
+    marginTop: "5px",
   },
   signupBtn: {
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 }));
 
 export default function LoginModal() {
@@ -76,7 +75,6 @@ export default function LoginModal() {
     });
   };
 
-
   // Used to create Login Form state
   const [userLogin, setUserLogin] = useState({
     username: "",
@@ -91,7 +89,6 @@ export default function LoginModal() {
     });
   };
 
-
   // API Information
   const APIKey = process.env.REACT_APP_API_KEY;
 
@@ -101,8 +98,7 @@ export default function LoginModal() {
   // const usernameUrlDebug = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth/username/`;
   const usernameUrl = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/username/username`;
 
-
-  // const authUserDebug = `https://private-anon-67afedf6fb-securecheckout.apiary-proxy.com/v1/cart/auth`;
+  const authUserMock = `https://cors-anywhere.herokuapp.com/https://private-anon-e8fbe0f1ad-securecheckout.apiary-mock.com/v1/cart/auth`;
   // const authUser = `https://api.securecheckout.com/v1/cart/auth`;
 
   // const createSessionProd = `https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/auth/session`;
@@ -116,70 +112,58 @@ export default function LoginModal() {
     },
   };
 
-
   // Checks if username exists, otherwise creates an account
   const ApiRegister = async (event) => {
     event.preventDefault();
-    await axios.get(usernameUrl, config).then(( data ) =>{
-     if(data.data === false){
-       console.log(data.data)
-       console.log(customerSignUp)
-      alert("name is avaliable")
-      axios
-        .post(registerUrl, customerSignUp, config)
-        .then((res) => {
-          console.log("RESPONSE RECEIVED: ", res);
-          alert("Registered Successfully")
-          handleClose();
-        })
-        .catch((err) => {
-          console.log("AXIOS ERROR: ", err);
-        });
-    }
-    else{
-      alert("Email or Username already exists.")
-    }
-  }
-  )
-};
+    await axios.get(usernameUrl, config).then((data) => {
+      if (data.data === false) {
+        console.log(data.data);
+        console.log(customerSignUp);
+        alert("name is avaliable");
+        axios
+          .post(registerUrl, customerSignUp, config)
+          .then((res) => {
+            console.log("RESPONSE RECEIVED: ", res);
+            alert("Registered Successfully");
+            handleClose();
+          })
+          .catch((err) => {
+            console.log("AXIOS ERROR: ", err);
+          });
+      } else {
+        alert("Email or Username already exists.");
+      }
+    });
+  };
 
-// API Call for user login
-const ApiLogin = async (event) => {
-  event.preventDefault();
+  // API Call for user login
+  const ApiLogin = async (event) => {
+    event.preventDefault();
 
-// Creates user session token
-     axios
-       .post(createSesionMock, config)
-       .then((res) => {
-         console.log("RESPONSE RECEIVED: ", res);
-         alert("session created")
-       })
-       .catch((err) => {
-         console.log("AXIOS ERROR: ", err);
-       });
-   
-
-// Checks if username exists
-  await axios.get(usernameUrl, config).then(( data ) =>{
-   if(data.data === true){
-     console.log(data.data)
+    // Authenticates user, if successful creates session token
     axios
-      .post(registerUrl, userLogin, config)
+      .post(authUserMock, userLogin, config)
       .then((res) => {
         console.log("RESPONSE RECEIVED: ", res);
+
+        // Session Token Post
+        axios
+          .post(createSesionMock, config)
+          .then((res) => {
+            console.log("RESPONSE RECEIVED: ", res);
+            alert("session created");
+          })
+          .catch((err) => {
+            console.log("AXIOS ERROR: ", err);
+          });
       })
+      // Authentication error
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
       });
-  }
-  else{
-    alert("Username or Email does not exist")
-  }
-}
-)
-};
-    
+  };
 
+  
   // Renders register modal
   {
     if (newUser) {
@@ -210,7 +194,7 @@ const ApiLogin = async (event) => {
                 </Typography>
                 <form onSubmit={ApiRegister}>
                   <TextField
-                  required
+                    required
                     id="outlined-basic"
                     name="first_name"
                     onChange={changeHandler}
@@ -218,7 +202,7 @@ const ApiLogin = async (event) => {
                   />
                   <br />
                   <TextField
-                  required
+                    required
                     id="outlined-basic"
                     name="last_name"
                     onChange={changeHandler}
@@ -226,31 +210,33 @@ const ApiLogin = async (event) => {
                   />
                   <br />
                   <TextField
-                  required
+                    required
                     id="outlined-basic"
                     name="username"
+                    type="email"
                     onChange={changeHandler}
                     label="Email Address/Username"
                   />
                   <br />
                   <TextField
-                  required
-                  id="standard-password-input"
+                    required
+                    id="standard-password-input"
                     name="password"
                     type="password"
                     onChange={changeHandler}
                     label="Password"
-                  
                   />
                   <br />
                   <TextField
-                  required
+                    required
                     id="outlined-basic"
                     name="state"
                     onChange={changeHandler}
                     label="State"
                   />
-                <Button className={classes.registerBtn}  type="submit">REGISTER</Button>
+                  <Button className={classes.registerBtn} type="submit">
+                    REGISTER
+                  </Button>
                 </form>
               </div>
             </Fade>
@@ -296,24 +282,32 @@ const ApiLogin = async (event) => {
                   quis nostrud nisi voluptate id.
                 </p>
                 <form onSubmit={ApiLogin}>
-                  <TextField 
-                  required
-                  id="outlined-basic" 
-                  name="username"
-                  onChange={changeHandlerLogin}
-                  label="Email Address/Username"/>
+                  <TextField
+                    required
+                    id="outlined-basic"
+                    name="username"
+                    onChange={changeHandlerLogin}
+                    label="Email Address/Username"
+                  />
                   <br></br>
-                  <TextField 
-                  required
-                  id="outlined-basic" 
-                  name="password"
-                  onChange={changeHandlerLogin}
-                  label="Password" />
-                <Button className={classes.registerBtn} type="submit">Sign In</Button>
+                  <TextField
+                    required
+                    id="outlined-basic"
+                    name="password"
+                    type="password"
+                    onChange={changeHandlerLogin}
+                    label="Password"
+                  />
+                  <Button className={classes.registerBtn} type="submit">
+                    Sign In
+                  </Button>
                 </form>
                 <span>
                   New Here?
-                  <Link className={classes.signupBtn} onClick={registerBtn}> SIGN UP</Link>
+                  <Link className={classes.signupBtn} onClick={registerBtn}>
+                    {" "}
+                    SIGN UP
+                  </Link>
                 </span>
               </div>
             </Fade>
