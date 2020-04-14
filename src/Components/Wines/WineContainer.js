@@ -49,12 +49,17 @@ const styles = {
     margin: "0 auto",
   },
   loading: {
-    position: 'relative',
+    position: "relative",
     margin: "0 auto",
     marginTop: "-10vh",
     textAlign: "center",
-    zIndex: '1200'
+    zIndex: "1200",
   },
+  backNextBtns: {
+    position: "relative",
+    margin: "5px auto",
+    textAlign: "center"
+  }
 };
 
 // API information for customer Cart
@@ -69,14 +74,15 @@ let config = {
   },
 };
 
-
-
 function WineContainer(props) {
   // Creates a state for the API results to be set to, if no results the values are set to an empty array.
-  const [count, setCount] = useState(0);
   const [containerState, setContainerState] = useState([]);
   var resultArr = [];
-
+  const [count, setCount] = useState(0);
+  const [renderCount, setRenderCount] = useState({
+    bottomCount: 0,
+    topCount: 10,
+  });
   // Creates state for user cart
   const [cartState, setCartState] = useState({
     quantity: "",
@@ -91,35 +97,33 @@ function WineContainer(props) {
     });
   };
 
-
   // When the Add To Cart Button is pressed useEffect waits for the count state to change before running the API Call. This prevents the API Call from running before the state has been updated which causes 400 errors
   useEffect(() => {
-      ApiAddToCart()
+    ApiAddToCart();
   }, [count]);
-
 
   // API Post for cart items
   const ApiAddToCart = async () => {
-    if (cartState.sku !== '' && cartState.quantity !== ''){
-    console.log(cartState)
-    await axios
-    .post(AddToCartUrl, cartState, config)
-    .then((res) => {
-      console.log("RESPONSE RECEIVED: ", res);
-      setCartState({
-        ...cartState,
-        quantity: '',
-        sku: ''
-      });
-    })
-    .catch((err) => {
-      console.log("AXIOS ERROR: ", err);
-    });
-  } if (cartState.sku !== '' && cartState.quantity === ''){
-    alert("please select a quantity")
-  }
+    if (cartState.sku !== "" && cartState.quantity !== "") {
+      console.log(cartState);
+      await axios
+        .post(AddToCartUrl, cartState, config)
+        .then((res) => {
+          console.log("RESPONSE RECEIVED: ", res);
+          setCartState({
+            ...cartState,
+            quantity: "",
+            sku: "",
+          });
+        })
+        .catch((err) => {
+          console.log("AXIOS ERROR: ", err);
+        });
+    }
+    if (cartState.sku !== "" && cartState.quantity === "") {
+      alert("please select a quantity");
+    }
   };
-
 
   // Styles and Media Queries
   // const { classes } = props;
@@ -131,104 +135,130 @@ function WineContainer(props) {
     ApiCall().then((data) => setContainerState(data));
   }, []);
 
-
-
-
-
   // Pushes JSON objects into an empty array converting them into array items
   if (containerState) {
     for (var i in containerState.data) {
       resultArr.push([i, containerState.data[i]]);
     }
-    
-    if (containerState.length < 1){
+
+    if (containerState.length < 1) {
       return (
-       <div className={props.classes.loading}>
-         <CircularProgress size={100}></CircularProgress>
-       </div>
-      
-      )
+        <div className={props.classes.loading}>
+          <CircularProgress size={100}></CircularProgress>
+        </div>
+      );
     }
 
-    
-    
     // Desktop Render
     if (desktopWidth) {
       return (
         <div>
-          {resultArr.slice(0,20).map(function (item, index) {
-          // {resultArr.map(function (item, index) {
-            return (
-              <Card key={index} className={props.classes.card} alt="Card Container">
-                <CardActionArea>
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {item[1].name}
-                    </Typography>
-
-                    <div> 
-                      {/* Source of console error: Failed prop type, image needs a require or onError */}
-                        <CardMedia 
-                        className={props.classes.media}
-                        image={item[1].image || null}
-                        alt="Wine Image"
-                        title="Contemplative Reptile"
-                        style={styles.media}
-                      />
-                      <Typography
-                        className={props.classes.desc}
-                        variant="body2"
-                        color="textSecondary"
-                        component="p"
-                      >
-                        {item[1].description}
+          {resultArr
+            .slice(renderCount.bottomCount, renderCount.topCount)
+            .map(function (item, index) {
+              // {resultArr.map(function (item, index) {
+              return (
+                <Card
+                  key={index}
+                  className={props.classes.card}
+                  alt="Card Container"
+                >
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {item[1].name}
                       </Typography>
-                    </div>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                  <Button size="small" color="primary">
-                    Share
-                  </Button>
-                  <Button size="small" color="primary">
-                    Learn More
-                  </Button>
-                  <InputLabel htmlFor="age-native-simple">Quantity</InputLabel>
-                  <Select
-                    native
-                    // value={quantityDisplay}
-                    onChange={changeHandlerQuantity}
-                  >
-                    <option aria-label="None" value="" />
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
-                    <option value={6}>6</option>
-                    <option value={7}>7</option>
-                    <option value={8}>8</option>
-                    <option value={9}>9</option>
-                    <option value={10}>10</option>
-                  </Select>
-                  <Button
-                    onClick={() => {
-                      setCartState({
-                        ...cartState,
-                        sku: item[1].sku,
-                      });
-                      setCount(count + 1);
-                    }}
-                    size="small"
-                    color="secondary"
-                  >
-                    Add to Cart
-                  </Button>
-                  {/* <AddToCart /> */}
-                </CardActions>
-              </Card>
-            );
-          })}
+
+                      <div>
+                        {/* Source of console error: Failed prop type, image needs a require or onError */}
+                        <CardMedia
+                          className={props.classes.media}
+                          image={item[1].image || null}
+                          alt="Wine Image"
+                          title="Contemplative Reptile"
+                          style={styles.media}
+                        />
+                        <Typography
+                          className={props.classes.desc}
+                          variant="body2"
+                          color="textSecondary"
+                          component="p"
+                        >
+                          {item[1].description}
+                        </Typography>
+                      </div>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                    <Button size="small" color="primary">
+                      Share
+                    </Button>
+                    <Button size="small" color="primary">
+                      Learn More
+                    </Button>
+                    <InputLabel htmlFor="age-native-simple">
+                      Quantity
+                    </InputLabel>
+                    <Select
+                      native
+                      // value={quantityDisplay}
+                      onChange={changeHandlerQuantity}
+                    >
+                      <option aria-label="None" value="" />
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                      <option value={4}>4</option>
+                      <option value={5}>5</option>
+                      <option value={6}>6</option>
+                      <option value={7}>7</option>
+                      <option value={8}>8</option>
+                      <option value={9}>9</option>
+                      <option value={10}>10</option>
+                    </Select>
+                    <Button
+                      onClick={() => {
+                        setCartState({
+                          ...cartState,
+                          sku: item[1].sku,
+                        });
+                        setCount(count + 1);
+                      }}
+                      size="small"
+                      color="secondary"
+                    >
+                      Add to Cart
+                    </Button>
+                    {/* <AddToCart /> */}
+                  </CardActions>
+                </Card>
+              );
+            })}
+
+            <div className={props.classes.backNextBtns}>
+          <Button size="large" color="secondary"
+          onClick={() => {
+            if(renderCount.bottomCount !== 0){
+              setRenderCount({
+                ...renderCount,
+                bottomCount: (renderCount.bottomCount-10),
+                topCount: (renderCount.topCount-10),
+              });
+            }
+          }}
+          >Back</Button>
+          <Button size="large" color="secondary"
+            onClick={() => {
+              setRenderCount({
+                ...renderCount,
+                bottomCount: (renderCount.bottomCount+10),
+                topCount: (renderCount.topCount+10),
+              });
+            }}
+            >
+            Next
+          </Button>
+            </div>
         </div>
       );
     }
@@ -279,9 +309,8 @@ function WineContainer(props) {
           })}
         </div>
       );
-    } 
-  } 
-
+    }
+  }
 }
 
 export default withStyles(styles)(WineContainer);
