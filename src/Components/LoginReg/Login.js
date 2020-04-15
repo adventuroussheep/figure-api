@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
+import MyContext from "../Context/Context";
 
 // For styling
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
   },
   signupBtn: {
     cursor: "pointer",
+  },
+  check: {
+    color: "white",
+    position: "absolute",
+    textShadow: "1px 1px 0 #000",
+    top: "60px",
+    right: "25px",
   },
 }));
 
@@ -139,6 +147,7 @@ export default function LoginModal() {
   // API Call for user login
   const ApiLogin = async (event) => {
     event.preventDefault();
+ 
 
     // Authenticates user, if successful creates session token
     axios
@@ -170,7 +179,9 @@ export default function LoginModal() {
   {
     if (newUser) {
       return (
-        <div>
+
+          <div>
+       
           <Button className={classes.login} type="button" onClick={handleOpen}>
             Login
           </Button>
@@ -244,6 +255,7 @@ export default function LoginModal() {
             </Fade>
           </Modal>
         </div>
+
       );
     }
   }
@@ -256,6 +268,7 @@ export default function LoginModal() {
           <Button className={classes.login} type="button" onClick={handleOpen}>
             Login
           </Button>
+          
           <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
