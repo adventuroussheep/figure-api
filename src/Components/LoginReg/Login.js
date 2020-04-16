@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Button, Link, TextField, Typography } from "@material-ui/core";
+import { Button, Link, TextField, Typography, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -50,6 +50,7 @@ export default function LoginModal() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [newUser, setNewUser] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   // Open and close for modal
   const handleOpen = () => {
@@ -97,6 +98,8 @@ export default function LoginModal() {
     });
   };
 
+
+
   // API Information
   const APIKey = process.env.REACT_APP_API_KEY;
 
@@ -119,6 +122,11 @@ export default function LoginModal() {
       "X-Sesion-Id": "12344321",
     },
   };
+
+
+
+
+
 
   // Checks if username exists, otherwise creates an account
   const ApiRegister = async (event) => {
@@ -144,11 +152,15 @@ export default function LoginModal() {
     });
   };
 
+
+
+
+
+
   // API Call for user login
   const ApiLogin = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
- 
-
     // Authenticates user, if successful creates session token
     axios
       .post(authUserMock, userLogin, config)
@@ -162,7 +174,9 @@ export default function LoginModal() {
             console.log("RESPONSE RECEIVED: ", res);
             alert("session created");
             // Sets token in session storage
-            sessionStorage.setItem("sessionToken", res.data)
+            sessionStorage.setItem("sessionToken", res.data);
+            window.location.reload();
+            setIsLoading(false);
           })
           .catch((err) => {
             console.log("AXIOS ERROR: ", err);
@@ -174,14 +188,16 @@ export default function LoginModal() {
       });
   };
 
+  
+
+
+
 
   // Renders register modal
   {
     if (newUser) {
       return (
-
-          <div>
-       
+        <div>
           <Button className={classes.login} type="button" onClick={handleOpen}>
             Login
           </Button>
@@ -255,79 +271,90 @@ export default function LoginModal() {
             </Fade>
           </Modal>
         </div>
-
       );
     }
   }
+
+
+
 
   // Renders Login Modal
   {
     if (!newUser) {
       return (
-        <div>
-          <Button className={classes.login} type="button" onClick={handleOpen}>
-            Login
-          </Button>
-          
-          <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            className={classes.modal}
-            open={open}
-            onClose={handleClose}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500,
-            }}
-          >
-            <Fade in={open}>
-              <div className={classes.paper}>
-                <Typography
-                  style={{ fontSize: "40px" }}
-                  id="transition-modal-title"
-                >
-                  Sign In
-                </Typography>
-                <p>
-                  Cupidatat sit ea esse officia duis dolore exercitation ullamco
-                  ullamco enim veniam mollit sint non. Cupidatat eiusmod eiusmod
-                  nulla ad. Anim deserunt laborum ex anim consectetur. Veniam
-                  commodo consequat consectetur laboris ex dolore nisi ea sunt
-                  quis nostrud nisi voluptate id.
-                </p>
-                <form onSubmit={ApiLogin}>
-                  <TextField
-                    required
-                    id="outlined-basic"
-                    name="username"
-                    onChange={changeHandlerLogin}
-                    label="Email Address/Username"
-                  />
-                  <br></br>
-                  <TextField
-                    required
-                    id="outlined-basic"
-                    name="password"
-                    type="password"
-                    onChange={changeHandlerLogin}
-                    label="Password"
-                  />
-                  <Button className={classes.registerBtn} type="submit">
-                    Sign In
-                  </Button>
-                </form>
-                <span>
-                  New Here?
-                  <Link className={classes.signupBtn} onClick={registerBtn}>
-                    {" "}
-                    SIGN UP
-                  </Link>
-                </span>
-              </div>
-            </Fade>
-          </Modal>
-        </div>
+        <MyContext.Consumer>
+          {(context) => (
+            <div>
+              <Button
+                className={classes.login}
+                type="button"
+                onClick={handleOpen}
+              >
+                Login
+              </Button>
+
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500,
+                }}
+              >
+                <Fade in={open}>
+                  <div className={classes.paper}>
+                    <Typography
+                      style={{ fontSize: "40px" }}
+                      id="transition-modal-title"
+                    >
+                      Sign In
+                    </Typography>
+                    <p>
+                      Cupidatat sit ea esse officia duis dolore exercitation
+                      ullamco ullamco enim veniam mollit sint non. Cupidatat
+                      eiusmod eiusmod nulla ad. Anim deserunt laborum ex anim
+                      consectetur. Veniam commodo consequat consectetur laboris
+                      ex dolore nisi ea sunt quis nostrud nisi voluptate id.
+                    </p>
+                    {isLoading ? <CircularProgress/> : null}
+                    <form onSubmit={ApiLogin}>
+                      <TextField
+                        required
+                        id="outlined-basic"
+                        name="username"
+                        onChange={changeHandlerLogin}
+                        label="Email Address/Username"
+                      />
+                      <br></br>
+                      <TextField
+                        required
+                        id="outlined-basic"
+                        name="password"
+                        type="password"
+                        onChange={changeHandlerLogin}
+                        label="Password"
+                      />
+                      <Button className={classes.registerBtn} type="submit">
+                        Sign In
+                      </Button>
+                    </form>
+                    <span>
+                      New Here?
+                      <Link className={classes.signupBtn} onClick={registerBtn}>
+                        {" "}
+                        SIGN UP
+                      </Link>
+                    </span>
+                  </div>
+                </Fade>
+              </Modal>
+            </div>
+          )}
+        </MyContext.Consumer>
       );
     }
   }

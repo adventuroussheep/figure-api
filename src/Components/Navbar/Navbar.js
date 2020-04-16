@@ -108,7 +108,7 @@ function Navbar(props) {
 
 
 
-  // Desktop menu
+  // Desktop menu Logged In
   if (desktopWidth && isSessionToken) {
     return (
       <MyContext.Consumer>
@@ -118,8 +118,6 @@ function Navbar(props) {
       <AppBar className={props.classes.appbar} position="absolute">
         {/* <MyButton>asdf</MyButton> */}
         <IconButton edge="start" color="inherit" aria-label="menu"></IconButton>
-        <Typography> asdfasdf{isSessionToken}</Typography>
-        <Link onClick={context.providerFunction}> {context.providerStateText}</Link>
         <Link
           to="/"
           color="inherit"
@@ -165,7 +163,6 @@ function Navbar(props) {
           </Link>
         </Toolbar>
         <Logout />
-        <LoginModal />
       </AppBar>
  )}
       </MyContext.Consumer>
@@ -178,7 +175,6 @@ function Navbar(props) {
       <AppBar className={props.classes.appbar} position="absolute">
         {/* <MyButton>asdf</MyButton> */}
         <IconButton edge="start" color="inherit" aria-label="menu"></IconButton>
-        <Typography> asdfasdf{isSessionToken}</Typography>
         <Link
           to="/"
           color="inherit"
@@ -192,7 +188,6 @@ function Navbar(props) {
         <Toolbar></Toolbar>
         {/* <Link color="inherit" underline="none"> */}
 
-        <Logout />
         <LoginModal />
       </AppBar>
     );

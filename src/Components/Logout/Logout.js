@@ -7,8 +7,8 @@ const useStyles = makeStyles((theme) => ({
       color: "white",
       position: "absolute",
       textShadow: "1px 1px 0 #000",
-      right: "15px",
-      top: "65px"
+      top: "38px",
+      right: "25px",
     }
 }))
 
@@ -17,7 +17,7 @@ export default function Logout() {
     return(
         <div>
             <Button className={classes.logout} onClick={()=>{
-                sessionStorage.setItem("sessionToken", '')
+                sessionStorage.setItem("sessionToken", ''); window.location.reload();
             }}>Logout</Button>
         </div>
     )
