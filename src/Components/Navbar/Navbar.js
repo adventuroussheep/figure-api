@@ -9,11 +9,13 @@ import {
   IconButton,
   Typography,
   SwipeableDrawer,
+  Popover,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 const styles = {
   appbar: {
@@ -51,6 +53,22 @@ const styles = {
     // border: '1px solid rgba(255, 255, 255, .3)',
     color: "white",
   },
+  cart: {
+    transition: "all .4s ease-in-out",
+    color: "white",
+    cursor: "pointer",
+    "&:hover": {
+      color: "#DAA520",
+    },
+    popover: {
+      "&::before": {
+        width: "500px",
+        height: "500px",
+        backgroundColor: "black!important",
+        alignItems: "center"
+      }
+    }
+  },
 };
 
 function Navbar(props) {
@@ -58,6 +76,19 @@ function Navbar(props) {
   const desktopWidth = useMediaQuery(theme.breakpoints.up("sm"));
 
   const isSessionToken = sessionStorage.getItem("sessionToken");
+
+  // Popover information
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+
 
   // Mobile Menu State
   const [state, setState] = React.useState({
@@ -104,69 +135,98 @@ function Navbar(props) {
     );
   }
 
-
-
-
-
   // Desktop menu Logged In
   if (desktopWidth && isSessionToken) {
     return (
       <MyContext.Consumer>
-        {context => (
+        {(context) => (
+          <AppBar className={props.classes.appbar} position="absolute">
+            {/* <MyButton>asdf</MyButton> */}
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+            ></IconButton>
+            <Link
+              to="/"
+              color="inherit"
+              underline="none"
+              style={{ textDecoration: "none" }}
+            >
+              <Typography className={props.classes.title} variant="h6">
+                FigureApi
+              </Typography>
+            </Link>
+            <Toolbar>
+              <Link
+                to="/about"
+                color="inherit"
+                underline="none"
+                style={{ textDecoration: "none" }}
+              >
+                <Typography className={props.classes.hover}>ABOUT</Typography>
+              </Link>
+              <Link
+                to="/wines"
+                color="inherit"
+                underline="none"
+                style={{ textDecoration: "none" }}
+              >
+                <Typography className={props.classes.hover}>WINES</Typography>
+              </Link>
+              <Link
+                to="/contact"
+                color="inherit"
+                underline="none"
+                style={{ textDecoration: "none" }}
+              >
+                <Typography className={props.classes.hover}>CONTACT</Typography>
+              </Link>
+              <Link
+                to="/visit"
+                color="inherit"
+                underline="none"
+                style={{ textDecoration: "none" }}
+              >
+                <Typography className={props.classes.hover}>VISIT</Typography>
+              </Link>
+              <ShoppingCartIcon
+                onClick={handleClick}
+                className={props.classes.cart}
+              />
+            </Toolbar>
+            <Logout />
 
-        
-      <AppBar className={props.classes.appbar} position="absolute">
-        {/* <MyButton>asdf</MyButton> */}
-        <IconButton edge="start" color="inherit" aria-label="menu"></IconButton>
-        <Link
-          to="/"
-          color="inherit"
-          underline="none"
-          style={{ textDecoration: "none" }}
-        >
-          <Typography className={props.classes.title} variant="h6">
-            FigureApi
-          </Typography>
-        </Link>
-        <Toolbar>
-          <Link
-            to="/about"
-            color="inherit"
-            underline="none"
-            style={{ textDecoration: "none" }}
-          >
-            <Typography className={props.classes.hover}>ABOUT</Typography>
-          </Link>
-          <Link
-            to="/wines"
-            color="inherit"
-            underline="none"
-            style={{ textDecoration: "none" }}
-          >
-            <Typography className={props.classes.hover}>WINES</Typography>
-          </Link>
-          <Link
-            to="/contact"
-            color="inherit"
-            underline="none"
-            style={{ textDecoration: "none" }}
-          >
-            <Typography className={props.classes.hover}>CONTACT</Typography>
-          </Link>
-          <Link
-            to="/visit"
-            color="inherit"
-            underline="none"
-            style={{ textDecoration: "none" }}
-          >
-            <Typography className={props.classes.hover}>VISIT</Typography>
-          </Link>
-        </Toolbar>
-        <Logout />
-      </AppBar>
- )}
+            {/* Cart Popover */}
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <div className={props.classes.popover}>
+
+              <Typography>Cart</Typography>
+              <div>
+              <Typography>Name of item</Typography>
+              <Typography>Quantity: </Typography>
+              <Typography>Price: </Typography>
+              </div>
+              <Typography>Total: </Typography>
+              </div>
+            </Popover>
+          </AppBar>
+        )}
       </MyContext.Consumer>
-      );
+    );
   }
 
   // Desktop menu Not Logged in

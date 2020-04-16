@@ -42,9 +42,11 @@ const styles = {
 
 function WineComponent(props) {
   // const { classes } = props;
+  const isSessionToken = sessionStorage.getItem("sessionToken");
+  // const PrivateRoute = ({component: Component, ...rest}) =>{
 
-  return (
-    <div className="winePageWrapper">
+    return (
+      <div className="winePageWrapper">
       <div className="headerScroll">
       <Typography className={props.classes.homeTitle}>To Your Table</Typography>
 
@@ -58,5 +60,6 @@ function WineComponent(props) {
     </div>
   );
 }
+// }
 
 export default withStyles(styles)(WineComponent);
