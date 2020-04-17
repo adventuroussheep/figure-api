@@ -61,7 +61,7 @@ function CartBtn(props) {
 
 
     useEffect(() => {
-        alert("cart Effect")
+        
       }, [anchorEl]);
 
 
