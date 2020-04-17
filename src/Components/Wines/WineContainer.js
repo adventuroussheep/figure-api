@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ApiCall from "./WineCall";
-import AddToCart from "../Cart/AddToCart/AddToCart";
+// import AddToCart from "../Cart/AddToCart/AddToCart";
 import {
   Card,
   CardActionArea,
@@ -97,9 +97,12 @@ function WineContainer(props) {
     });
   };
 
+  var sessionCart = [];
+
   // When the Add To Cart Button is pressed useEffect waits for the count state to change before running the API Call. This prevents the API Call from running before the state has been updated which causes 400 errors
   useEffect(() => {
     ApiAddToCart();
+
   }, [count]);
 
   // API Post for cart items
@@ -115,9 +118,14 @@ function WineContainer(props) {
             quantity: "",
             sku: "",
           });
+          // sessionCart.push(JSON.parse(sessionStorage.getItem("cartSession")));
+          sessionCart.push(JSON.parse(cartState));
+          sessionStorage.setItem('cartSession', JSON.stringify(sessionCart))
+          alert("Added to cart");
         })
         .catch((err) => {
           console.log("AXIOS ERROR: ", err);
+          alert("Out of Stock, Please check back later")
         });
     }
     if (cartState.sku !== "" && cartState.quantity === "") {
@@ -301,7 +309,7 @@ function WineContainer(props) {
                     <Button size="small" color="primary">
                       Learn More
                     </Button>
-                    <AddToCart />
+                    {/* <AddToCart /> */}
                   </div>
                 </CardActions>
               </Card>

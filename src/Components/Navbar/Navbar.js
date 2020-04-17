@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "./navbar.css";
 import LoginModal from "../LoginReg/Login";
 import Logout from "../Logout/Logout";
+import CartBtn from "../Cart/CartBtn";
 import MyContext from "../Context/Context";
 import {
   AppBar,
@@ -9,13 +10,12 @@ import {
   IconButton,
   Typography,
   SwipeableDrawer,
-  Popover,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+
 
 const styles = {
   appbar: {
@@ -53,22 +53,6 @@ const styles = {
     // border: '1px solid rgba(255, 255, 255, .3)',
     color: "white",
   },
-  cart: {
-    transition: "all .4s ease-in-out",
-    color: "white",
-    cursor: "pointer",
-    "&:hover": {
-      color: "#DAA520",
-    },
-    popover: {
-      "&::before": {
-        width: "500px",
-        height: "500px",
-        backgroundColor: "black!important",
-        alignItems: "center"
-      }
-    }
-  },
 };
 
 function Navbar(props) {
@@ -77,19 +61,7 @@ function Navbar(props) {
 
   const isSessionToken = sessionStorage.getItem("sessionToken");
 
-  // Popover information
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-
-
-
+  
   // Mobile Menu State
   const [state, setState] = React.useState({
     left: false,
@@ -190,39 +162,13 @@ function Navbar(props) {
               >
                 <Typography className={props.classes.hover}>VISIT</Typography>
               </Link>
-              <ShoppingCartIcon
-                onClick={handleClick}
-                className={props.classes.cart}
-              />
+
+              <CartBtn/>
             </Toolbar>
             <Logout />
 
             {/* Cart Popover */}
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-            >
-              <div className={props.classes.popover}>
-
-              <Typography>Cart</Typography>
-              <div>
-              <Typography>Name of item</Typography>
-              <Typography>Quantity: </Typography>
-              <Typography>Price: </Typography>
-              </div>
-              <Typography>Total: </Typography>
-              </div>
-            </Popover>
+           
           </AppBar>
         )}
       </MyContext.Consumer>
