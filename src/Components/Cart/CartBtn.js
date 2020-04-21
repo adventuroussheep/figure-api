@@ -7,6 +7,7 @@ import {
 } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { withStyles, useTheme } from "@material-ui/core/styles";
+import { Divider } from '@material-ui/core';
 
 const styles = {
     root: {
@@ -45,7 +46,8 @@ const styles = {
 
 
 function CartBtn(props) {
-
+  
+  var cartSessionStorage = JSON.parse(sessionStorage.getItem("cartSession"));
     const theme = useTheme();
     
     // Popover information
@@ -58,44 +60,87 @@ function CartBtn(props) {
     };
     const open = Boolean(anchorEl);
     const id = open ? "simple-popover" : undefined;
-
-
     useEffect(() => {
-        
       }, [anchorEl]);
 
 
-    return(
+    //   const removeItem = () =>{
+    //     {cartSessionStorage.map(function(item, index){
+    //       alert(this.index);
+    //     })
+    //   }
+    // }
+    
+      
 
+      
+    if (cartSessionStorage){
+
+      return(
         <div>
     <ShoppingCartIcon onClick={handleClick} className={props.classes.cart} />
 
     <Popover
-    // classes={{
-    //     root: props.classes.root
-    // }}
       id={id}
       open={open}
       anchorEl={anchorEl}
       onClose={handleClose}
       anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
-        }}
-        >
+        vertical: "bottom",
+        horizontal: "center",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
+      >
             
       <div className={props.classes.popover}>
-      
-        <Typography>Cart</Typography>
+        <Typography gutterBottom variant="h5" component="h2">Cart</Typography>
+               { 
+                 cartSessionStorage.map(function(item, index){
+                  //  var cartSessionIndexing = sessionStorage.getItem("cartSession")[index];
+                  // var cartSessionIndexing = sessionStorage.key(0);
+                  // sessionStorage.name = item.name;
+                  // var name = sessionStorage.name;
+                  var n = sessionStorage.getItem("cartSession").length;
+                  var key = sessionStorage.key(n);
+                   return(
+                     <div key={index}>
+              <Typography>
+              {item.name}
+            </Typography>
+            <Typography>
+              Quantity: {item.quantity}
+            </Typography>
+            <Typography>
+              Price: {item.price}
+            </Typography>
+            <Button onClick={()=>{
+              var emptyArr = [];
+              var currentCartState = JSON.parse(sessionStorage.getItem('cartSession'));
+              emptyArr.push((currentCartState));
+              var splicedArr = emptyArr[0].splice(index, 1);
+              console.log(emptyArr);
+              
+              // ALMOST FUNCTIONING, session is returned with empty array causing indexing issuse when new items are pushed.
+              // Cannot Remove below empty [] 
+              sessionStorage.removeItem('cartSession');
+              var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || null;
+          currentCartState.push(emptyArr);
+          sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
+
+
+
+            }} color={'secondary'}>Delete</Button>
+            <Divider/>
+            </div>
+             )
+             
+            })}
+
         <div>
-          <Typography>Name of item</Typography>
-          <Typography>Quantity: </Typography>
-          <Typography>Price: </Typography>
-          <Button color={'secondary'}>Delete</Button>
+          
         </div>
         <Typography>Total: </Typography>
       </div>
@@ -103,6 +148,32 @@ function CartBtn(props) {
     </Popover>
   </div>
 )
+}
+if (!cartSessionStorage){
+  return(
+    <div>
+
+    <ShoppingCartIcon onClick={handleClick} className={props.classes.cart} />
+
+    <Popover
+      id={id}
+      open={open}
+      anchorEl={anchorEl}
+      onClose={handleClose}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "center",
+      }}
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "center",
+      }}
+      >
+      <Typography>Cart is Empty</Typography>
+      </Popover>
+      </div>
+  )
+}
 }
 
 export default withStyles(styles)(CartBtn);

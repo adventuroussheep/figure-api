@@ -83,16 +83,28 @@ function WineContainer(props) {
     bottomCount: 0,
     topCount: 10,
   });
-  // Creates state for user cart
+  // Creates Cart state for AddToCart API Post
   const [cartState, setCartState] = useState({
     quantity: "",
     sku: "",
+  });
+
+  // Create Cart state for local session, cartBtn rendering, and future checkout page
+  const [localCartState, setLocalCartState] = useState({
+    name: "",
+    quantity: "",
+    sku: "",
+    price: "",
   });
 
   // Gets quantity for add cart
   const changeHandlerQuantity = (event) => {
     setCartState({
       ...cartState,
+      quantity: event.target.value,
+    });
+    setLocalCartState({
+      ...localCartState,
       quantity: event.target.value,
     });
   };
@@ -109,6 +121,7 @@ function WineContainer(props) {
   const ApiAddToCart = async () => {
     if (cartState.sku !== "" && cartState.quantity !== "") {
       console.log(cartState);
+      console.log(sessionCart)
       await axios
         .post(AddToCartUrl, cartState, config)
         .then((res) => {
@@ -119,13 +132,20 @@ function WineContainer(props) {
             sku: "",
           });
           // sessionCart.push(JSON.parse(sessionStorage.getItem("cartSession")));
-          sessionCart.push(JSON.parse(cartState));
-          sessionStorage.setItem('cartSession', JSON.stringify(sessionCart))
-          alert("Added to cart");
+          // sessionCart.push(JSON.parse(cartState));
+          // sessionStorage.setItem('cartSession', JSON.stringify(sessionCart))
+          // alert("Added to cart");
         })
         .catch((err) => {
           console.log("AXIOS ERROR: ", err);
-          alert("Out of Stock, Please check back later")
+
+
+
+
+          // Used to append cart data to local session
+          var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
+          currentCartState.push(localCartState);
+          sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
         });
     }
     if (cartState.sku !== "" && cartState.quantity === "") {
@@ -228,6 +248,12 @@ function WineContainer(props) {
                       onClick={() => {
                         setCartState({
                           ...cartState,
+                          sku: item[1].sku,
+                        });
+                        setLocalCartState({
+                          ...localCartState,
+                          name: item[1].name,
+                          price: item[1].price,
                           sku: item[1].sku,
                         });
                         setCount(count + 1);
