@@ -20,24 +20,6 @@ const styles = {
     textAlign: 'center',
     top: '30vh',
   }, 
-  wines:{
-    // position: 'relative',
-    color: "#fff",
-    fontSize: "45px",
-    textShadow: "2px 2px 2px #000",
-    margin: '0 auto',
-    textAlign: 'center',
-    // position: "-webkit-sticky",
-    position: "sticky",
-    top: "0"
-  },
-  wineDiv:{
-    backgroundColor: "#f8f7eb",
-    position: "sticky",
-    top: "0",
-    zIndex: "1100",
-    boxShadow: '2px 1px 2px gray',
-  }
 };
 
 function WineComponent(props) {
@@ -52,9 +34,9 @@ function WineComponent(props) {
 
       </div>
       <div className={props.classes.pageContent}>
-        <div className={props.classes.wineDiv}>
+        {/* <div className={props.classes.wineDiv}>
         <Typography className={props.classes.wines}>Wines</Typography>
-        </div>
+        </div> */}
         <WineContainer />
       </div>
     </div>

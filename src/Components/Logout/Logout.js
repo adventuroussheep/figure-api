@@ -16,7 +16,7 @@ export default function Logout() {
     const classes = useStyles();
     return(
         <div>
-            <Button className={classes.logout} onClick={()=>{
+            <Button className={classes.logout} href="/" onClick={()=>{
                 sessionStorage.setItem("sessionToken", ''); window.location.reload();
             }}>Logout</Button>
         </div>

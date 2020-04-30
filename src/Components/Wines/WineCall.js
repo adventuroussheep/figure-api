@@ -18,7 +18,7 @@ let config = {
 
 
 export const ApiCall = async () =>{
-    const result = await axios.get(freaturedProdMock, config).then(( data ) => data);
+    const result = await axios.get(currentProdUrl, config).then(( data ) => data);
     return result;
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ApiCall from "./WineCall";
+import './winecomponent.css';
 // import AddToCart from "../Cart/AddToCart/AddToCart";
 import {
   Card,
@@ -59,6 +60,24 @@ const styles = {
     position: "relative",
     margin: "5px auto",
     textAlign: "center"
+  },
+  wines:{
+    // position: 'relative',
+    color: "#fff",
+    fontSize: "45px",
+    textShadow: "2px 2px 2px #000",
+    margin: '0 auto',
+    textAlign: 'center',
+    // position: "-webkit-sticky",
+    position: "sticky",
+    top: "0"
+  },
+  wineDiv:{
+    backgroundColor: "#f8f7eb",
+    position: "sticky",
+    top: "0",
+    zIndex: "1100",
+    boxShadow: '2px 1px 2px gray',
   }
 };
 
@@ -131,21 +150,23 @@ function WineContainer(props) {
             quantity: "",
             sku: "",
           });
-          // sessionCart.push(JSON.parse(sessionStorage.getItem("cartSession")));
-          // sessionCart.push(JSON.parse(cartState));
-          // sessionStorage.setItem('cartSession', JSON.stringify(sessionCart))
-          // alert("Added to cart");
+          alert("Added to Cart");
+
+    // Used to append cart data to local session
+    var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
+    currentCartState.push(localCartState);
+    sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
         })
         .catch((err) => {
           console.log("AXIOS ERROR: ", err);
 
 
 
-
+          // DUPLICATE, Use for mock routes
           // Used to append cart data to local session
-          var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
-          currentCartState.push(localCartState);
-          sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
+          // var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
+          // currentCartState.push(localCartState);
+          // sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
         });
     }
     if (cartState.sku !== "" && cartState.quantity === "") {
@@ -181,6 +202,9 @@ function WineContainer(props) {
     if (desktopWidth) {
       return (
         <div>
+               <div className={props.classes.wineDiv}>
+        <Typography className={props.classes.wines}>Wines</Typography>
+        </div>
           {resultArr
             .slice(renderCount.bottomCount, renderCount.topCount)
             .map(function (item, index) {
