@@ -4,6 +4,7 @@ import Navbar from "./Components/Navbar/Navbar";
 import HomePage from "./Components/HomePage/HomePage";
 import Wines from "./Components/Wines/WineComponent";
 import PageNotFound from "./Components/404/404";
+import Checkout from "./Components/Checkout/Checkout";
 import MyProvider from "./Components/Context/Provider";
 
 
@@ -16,6 +17,7 @@ class Router extends Component {
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/wines" component={Wines} />
+            <Route exact path="/checkout" component={Checkout} />
             <Route exact path="" component={PageNotFound} />
           </Switch>
         </HashRouter>

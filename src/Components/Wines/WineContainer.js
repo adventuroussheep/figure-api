@@ -94,6 +94,7 @@ let config = {
 };
 
 function WineContainer(props) {
+  
   // Creates a state for the API results to be set to, if no results the values are set to an empty array.
   const [containerState, setContainerState] = useState([]);
   var resultArr = [];
@@ -102,6 +103,7 @@ function WineContainer(props) {
     bottomCount: 0,
     topCount: 10,
   });
+
   // Creates Cart state for AddToCart API Post
   const [cartState, setCartState] = useState({
     quantity: "",

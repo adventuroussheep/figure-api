@@ -3,6 +3,7 @@ import MyContext from "../Context/Context";
 import { Typography, Popover, Button } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { withStyles, useTheme } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 import { Divider } from "@material-ui/core";
 
 const styles = {
@@ -41,7 +42,6 @@ function CartBtn(props) {
   var cartSessionStorage = JSON.parse(sessionStorage.getItem("cartSession"));
   const theme = useTheme();
   const emptyArr = [];
-  
 
   // Popover information
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -105,11 +105,11 @@ function CartBtn(props) {
                       // var currentCartState = JSON.parse(
                       //   sessionStorage.getItem("cartSession")
                       //   );
-                      //   var emptyArr = currentCartState || null;                   
-                        
+                      //   var emptyArr = currentCartState || null;
+
                       // emptyArr.push(currentCartState);
                       // // var splicedArr = emptyArr[0].splice(index, 1);
-                    
+
                       //   console.log(currentCartState);
                       // // ALMOST FUNCTIONING, session is returned with empty array causing indexing issuse when new items are pushed.
                       // // Cannot Remove below empty []
@@ -121,9 +121,10 @@ function CartBtn(props) {
                       // sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
 
 
-
-
-                      var currentCartState = JSON.parse(sessionStorage.getItem("cartSession"));
+                      
+                      var currentCartState = JSON.parse(
+                        sessionStorage.getItem("cartSession")
+                      );
 
                       emptyArr.push(currentCartState);
                       // emptyArr.splice(index, 1)
@@ -131,21 +132,15 @@ function CartBtn(props) {
                       var splicedArr = emptyArr[0].splice(index, 1) && emptyArr;
 
                       console.log(splicedArr);
-                      
-                      
+
                       // delete emptyArr[key];
 
                       sessionStorage.removeItem("cartSession");
 
-
-                      sessionStorage.setItem('cartSession', JSON.stringify(splicedArr[0]));
-
-
-
-
-
-
-
+                      sessionStorage.setItem(
+                        "cartSession",
+                        JSON.stringify(splicedArr[0])
+                      );
                     }}
                     color={"secondary"}
                   >
@@ -157,9 +152,15 @@ function CartBtn(props) {
             })}
 
             <div></div>
-            <Typography>Total: </Typography>
           </div>
+          <Link
+          to="/checkout"
+          color="inherit"
+          underline="none"
+          style={{ textDecoration: "none" }}
+        >
           <Button color={"primary"}>Checkout</Button>
+          </Link>
         </Popover>
       </div>
     );
