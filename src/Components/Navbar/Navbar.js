@@ -26,8 +26,9 @@ const styles = {
   },
   title: {
     color: "white",
+    // fontWeight: 'bold',
     position: "absolute",
-    textShadow: "1px 1px 0 #000",
+    textShadow: "2px 1px 0 #000",
     top: "38px",
     left: "25px",
     cursor: "pointer",
@@ -36,7 +37,7 @@ const styles = {
     color: "white",
     transition: "all .4s ease-in-out",
     textDecoration: "none",
-    textShadow: "1px 1px 0 #000",
+    textShadow: "2px 1px 0 #000",
     margin: "20px",
     "&:hover": {
       color: "#DAA520",

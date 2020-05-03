@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
     logout: {
       color: "white",
       position: "absolute",
-      textShadow: "1px 1px 0 #000",
+      textShadow: "2px 1px 0 #000",
       top: "38px",
       right: "25px",
     }
