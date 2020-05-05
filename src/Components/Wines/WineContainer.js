@@ -154,21 +154,26 @@ function WineContainer(props) {
           });
           alert("Added to Cart");
 
+
+    // USE IN PRODUCTION
     // Used to append cart data to local session
-    var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
-    currentCartState.push(localCartState);
-    sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
+
+    // var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
+    // currentCartState.push(localCartState);
+    // sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
         })
         .catch((err) => {
+          // alert("Could not add to cart")
           console.log("AXIOS ERROR: ", err);
 
 
-
           // DUPLICATE, Use for mock routes
-          // Used to append cart data to local session
-          // var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
-          // currentCartState.push(localCartState);
-          // sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
+          alert("Added to Mock cart")
+          var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
+          currentCartState.push(localCartState);
+          sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
+
+
         });
     }
     if (cartState.sku !== "" && cartState.quantity === "") {

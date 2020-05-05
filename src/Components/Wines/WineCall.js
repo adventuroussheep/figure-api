@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const freaturedProdMock = 'https://private-anon-d2fe717142-securecheckout.apiary-mock.com/v1/cart/products/featured'
 
-export const freaturedProdUrl = "https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/products/featured";
+// export const freaturedProdUrl = "https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/products/featured";
 
 const currentProdUrl = 'https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/products/'
 
@@ -18,7 +18,7 @@ let config = {
 
 
 export const ApiCall = async () =>{
-    const result = await axios.get(currentProdUrl, config).then(( data ) => data);
+    const result = await axios.get(freaturedProdMock, config).then(( data ) => data);
     return result;
 }
 

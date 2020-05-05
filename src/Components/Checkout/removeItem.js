@@ -20,7 +20,7 @@ let config = {
 
 
 export const RemoveItemCall = async () =>{
-    const result = await axios.delete(`${currentProdUrl} ${sku} `, config).then((res) => {
+    const result = await axios.delete(`${removeItemMock} ${sku} `, config).then((res) => {
         console.log(res);
       })
       .catch((err) => {

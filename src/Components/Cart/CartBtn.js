@@ -5,6 +5,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { Divider } from "@material-ui/core";
+import axios from 'axios';
 
 const styles = {
   root: {
@@ -40,27 +41,68 @@ const styles = {
 
 function CartBtn(props) {
   var cartSessionStorage = JSON.parse(sessionStorage.getItem("cartSession"));
+   
   const theme = useTheme();
   const emptyArr = [];
 
   // Popover information
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    
+
+    // REMOVE ~~~~~
+    console.log("currentCartState on cartClick");
+    console.log(JSON.parse(
+      sessionStorage.getItem("cartSession")
+    ));
+
+
   };
+
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   useEffect(() => {}, [anchorEl]);
 
-  //   const removeItem = () =>{
-  //     {cartSessionStorage.map(function(item, index){
-  //       alert(this.index);
-  //     })
-  //   }
-  // }
+
+
+
+
+
+  // API Information
+const removeItemMock = 'https://private-anon-1283649964-securecheckout.apiary-mock.com/v1/cart/items/'
+const removeItemUrl = "https://cors-anywhere.herokuapp.com/https://api.securecheckout.com/v1/cart/items/";
+  
+  const APIKey = process.env.REACT_APP_API_KEY;
+  const xAuthToken = sessionStorage.getItem("sessionToken");
+  
+  let config = {
+      headers: {
+          "Content-Type" : "application/json",
+          "X-Auth-Token" : APIKey,
+          "X-Sesion-Id" : xAuthToken,
+      }
+  };
+
+  let sku = '';
+
+  // Remove Item API Delete
+  const RemoveItemCall = async () =>{
+    const result = await axios.delete(`${removeItemMock} ${sku} `, config).then((res) => {
+        console.log("Removed Successfully" + JSON.stringify(res));
+      })
+      .catch((err) => {
+        console.log("AXIOS ERROR: ", err);
+      });
+}
 
   if (cartSessionStorage) {
     return (
@@ -100,47 +142,62 @@ function CartBtn(props) {
                   <Typography>{item.name}</Typography>
                   <Typography>Quantity: {item.quantity}</Typography>
                   <Typography>Price: {item.price}</Typography>
+
+                  {/* Delete Button Functions */}
                   <Button
                     onClick={() => {
-                      // var currentCartState = JSON.parse(
-                      //   sessionStorage.getItem("cartSession")
-                      //   );
-                      //   var emptyArr = currentCartState || null;
-
-                      // emptyArr.push(currentCartState);
-                      // // var splicedArr = emptyArr[0].splice(index, 1);
-
-                      //   console.log(currentCartState);
-                      // // ALMOST FUNCTIONING, session is returned with empty array causing indexing issuse when new items are pushed.
-                      // // Cannot Remove below empty []
-                      // sessionStorage.removeItem("cartSession");
-                      // var currentCartState =
-                      //   JSON.parse(sessionStorage.getItem("cartSession")) ||
-                      //   emptyArr;
-                      // currentCartState.push(emptyArr);
-                      // sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
-
-
                       
+                     
                       var currentCartState = JSON.parse(
                         sessionStorage.getItem("cartSession")
-                      );
+                        );
 
-                      emptyArr.push(currentCartState);
-                      // emptyArr.splice(index, 1)
-                      console.log(splicedArr);
+
+
+
+                        console.log("currentCartState thats being pushed to the emptryArr");
+                        console.log(currentCartState);
+                        
+                      
+                        // emptyArr.push(currentCartState);
+                        emptyArr.push(JSON.parse(
+                          sessionStorage.getItem("cartSession")
+                          ))
+
+
+                        console.log("emptyArr after currentCartState push and after item deleted");
+                        console.log(emptyArr);
+
+
+                        // Used to get deleted item sku
+                        var deletedItem = emptyArr[0].splice(index, 1);
+                        sku = deletedItem[0].sku;
+                        
+                      
+                      // var splicedArr = emptyArr[0].splice(index, 1) && emptyArr;
+
+                      // console.log(emptyArr);
+                      // var arrayInsideIndex = emptyArr[0];
+                     
+                     
+                      // var splicedArr = emptyArr[0].splice(index, 1);
+                      
                       var splicedArr = emptyArr[0].splice(index, 1) && emptyArr;
-
+                      
+                        console.log("The array thats being pushed")
                       console.log(splicedArr);
 
-                      // delete emptyArr[key];
+    
+
 
                       sessionStorage.removeItem("cartSession");
 
                       sessionStorage.setItem(
                         "cartSession",
                         JSON.stringify(splicedArr[0])
+                        // JSON.stringify(splicedArr)
                       );
+                      // RemoveItemCall();
                     }}
                     color={"secondary"}
                   >
