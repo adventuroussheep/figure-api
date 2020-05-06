@@ -5,6 +5,8 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { Divider } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse';
 import axios from 'axios';
 
 const styles = {
@@ -53,13 +55,6 @@ function CartBtn(props) {
     setAnchorEl(event.currentTarget);
     
 
-    // REMOVE ~~~~~
-    console.log("currentCartState on cartClick");
-    console.log(JSON.parse(
-      sessionStorage.getItem("cartSession")
-    ));
-
-
   };
 
 
@@ -73,7 +68,16 @@ function CartBtn(props) {
   useEffect(() => {}, [anchorEl]);
 
 
+  // Used for Alert Open/Close
+  const [removedAlert, setRemovedAlert] = React.useState(false);
 
+  // Used to flash removed alert
+const FlashAlert = () => {
+  setRemovedAlert(true);
+  setTimeout(() => {
+    setRemovedAlert(false);
+  }, 2000);
+}
 
 
 
@@ -92,12 +96,14 @@ const removeItemUrl = "https://cors-anywhere.herokuapp.com/https://api.secureche
       }
   };
 
-  let sku = '';
 
+  
   // Remove Item API Delete
+  let sku = '';
   const RemoveItemCall = async () =>{
     const result = await axios.delete(`${removeItemMock} ${sku} `, config).then((res) => {
         console.log("Removed Successfully" + JSON.stringify(res));
+        FlashAlert();
       })
       .catch((err) => {
         console.log("AXIOS ERROR: ", err);
@@ -126,15 +132,24 @@ const removeItemUrl = "https://cors-anywhere.herokuapp.com/https://api.secureche
             horizontal: "center",
           }}
         >
+
           <div className={props.classes.popover}>
+
+
+
+
+          <Collapse in={removedAlert}>
+          <Alert severity="success">Removed from cart</Alert>
+          </Collapse>
+
+
+
+
+
             <Typography gutterBottom variant="h5" component="h2">
               Cart
             </Typography>
             {cartSessionStorage.map(function (item, index) {
-              //  var cartSessionIndexing = sessionStorage.getItem("cartSession")[index];
-              // var cartSessionIndexing = sessionStorage.key(0);
-              // sessionStorage.name = item.name;
-              // var name = sessionStorage.name;
               var n = sessionStorage.getItem("cartSession").length;
               var key = sessionStorage.key(n);
               return (
@@ -146,58 +161,20 @@ const removeItemUrl = "https://cors-anywhere.herokuapp.com/https://api.secureche
                   {/* Delete Button Functions */}
                   <Button
                     onClick={() => {
-                      
-                     
+                                         
                       var currentCartState = JSON.parse(
                         sessionStorage.getItem("cartSession")
-                        );
-
-
-
-
-                        console.log("currentCartState thats being pushed to the emptryArr");
-                        console.log(currentCartState);
+                        );                       
                         
-                      
-                        // emptyArr.push(currentCartState);
-                        emptyArr.push(JSON.parse(
-                          sessionStorage.getItem("cartSession")
-                          ))
-
-
-                        console.log("emptyArr after currentCartState push and after item deleted");
-                        console.log(emptyArr);
-
-
-                        // Used to get deleted item sku
-                        var deletedItem = emptyArr[0].splice(index, 1);
-                        sku = deletedItem[0].sku;
+                        var cartSplicer = currentCartState.splice(index, 1);
                         
-                      
-                      // var splicedArr = emptyArr[0].splice(index, 1) && emptyArr;
+                        // Gets sku for deleted item api call
+                        sku = cartSplicer[0].sku;
+                       
+                        sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
 
-                      // console.log(emptyArr);
-                      // var arrayInsideIndex = emptyArr[0];
-                     
-                     
-                      // var splicedArr = emptyArr[0].splice(index, 1);
-                      
-                      var splicedArr = emptyArr[0].splice(index, 1) && emptyArr;
-                      
-                        console.log("The array thats being pushed")
-                      console.log(splicedArr);
+                        RemoveItemCall();
 
-    
-
-
-                      sessionStorage.removeItem("cartSession");
-
-                      sessionStorage.setItem(
-                        "cartSession",
-                        JSON.stringify(splicedArr[0])
-                        // JSON.stringify(splicedArr)
-                      );
-                      // RemoveItemCall();
                     }}
                     color={"secondary"}
                   >

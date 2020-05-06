@@ -13,6 +13,8 @@ import {
   Button,
   CircularProgress,
 } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
+import Collapse from '@material-ui/core/Collapse';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import { Select, InputLabel } from "@material-ui/core/";
@@ -73,7 +75,7 @@ const styles = {
     top: "0"
   },
   wineDiv:{
-    backgroundColor: "#f8f7eb",
+    backgroundColor: "#e3e0cc",
     position: "sticky",
     top: "0",
     zIndex: "1100",
@@ -132,6 +134,25 @@ function WineContainer(props) {
 
   var sessionCart = [];
 
+
+const [addedToCartAlert, setAddedToCartAlert] = React.useState(false);
+
+const [outOfStockAlert, setOutOfStockAlert] = React.useState(false);
+
+  // Used to flash Added to Cart
+const FlashAddedToCart = () => {
+  setAddedToCartAlert(true);
+  setTimeout(() => {
+    setAddedToCartAlert(false);
+  }, 2000);
+}
+const FlashOutOfStock = () => {
+  setOutOfStockAlert(true);
+  setTimeout(() => {
+    setOutOfStockAlert(false);
+  }, 2000);
+}
+
   // When the Add To Cart Button is pressed useEffect waits for the count state to change before running the API Call. This prevents the API Call from running before the state has been updated which causes 400 errors
   useEffect(() => {
     ApiAddToCart();
@@ -161,6 +182,7 @@ function WineContainer(props) {
     // var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
     // currentCartState.push(localCartState);
     // sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
+    // FlashAddedToCart();
         })
         .catch((err) => {
           // alert("Could not add to cart")
@@ -168,10 +190,12 @@ function WineContainer(props) {
 
 
           // DUPLICATE, Use for mock routes
-          alert("Added to Mock cart")
+          // alert("Added to Mock cart")
           var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
           currentCartState.push(localCartState);
           sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
+          // FlashAddedToCart();
+          FlashOutOfStock();
 
 
         });
@@ -211,6 +235,14 @@ function WineContainer(props) {
         <div>
                <div className={props.classes.wineDiv}>
         <Typography className={props.classes.wines}>Wines</Typography>
+        {/* Success Alert */}
+        <Collapse in={addedToCartAlert}>
+          <Alert severity="success">Added to cart!</Alert>
+          </Collapse>
+          {/* Error Alert */}
+          <Collapse in={outOfStockAlert}>
+          <Alert severity="error">Item is not available</Alert>
+          </Collapse>
         </div>
           {resultArr
             .slice(renderCount.bottomCount, renderCount.topCount)

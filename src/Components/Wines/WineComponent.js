@@ -7,7 +7,7 @@ import "./winecomponent.css";
 const styles = {
   pageContent: {
     position: "absolute",
-    backgroundColor: "#f8f7eb",
+    backgroundColor: "#e3e0cc",
     top: "65%",
     width: "100%",
   },
