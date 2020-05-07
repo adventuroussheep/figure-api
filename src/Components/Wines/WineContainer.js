@@ -173,16 +173,15 @@ const FlashOutOfStock = () => {
             quantity: "",
             sku: "",
           });
-          alert("Added to Cart");
-
 
     // USE IN PRODUCTION
     // Used to append cart data to local session
 
-    // var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
-    // currentCartState.push(localCartState);
-    // sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
-    // FlashAddedToCart();
+    var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
+    currentCartState.push(localCartState);
+    sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
+    FlashAddedToCart();
+
         })
         .catch((err) => {
           // alert("Could not add to cart")
@@ -191,10 +190,12 @@ const FlashOutOfStock = () => {
 
           // DUPLICATE, Use for mock routes
           // alert("Added to Mock cart")
-          var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
-          currentCartState.push(localCartState);
-          sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
+          // var currentCartState = JSON.parse(sessionStorage.getItem('cartSession')) || [];
+          // currentCartState.push(localCartState);
+          // sessionStorage.setItem('cartSession', JSON.stringify(currentCartState));
           // FlashAddedToCart();
+
+
           FlashOutOfStock();
 
 

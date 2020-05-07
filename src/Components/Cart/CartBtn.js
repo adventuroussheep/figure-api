@@ -33,9 +33,7 @@ const styles = {
     popover: {
       "&::before": {
         width: "500px",
-        height: "500px",
-        backgroundColor: "black!important",
-        alignItems: "center",
+        height: "500px",    
       },
     },
   },
@@ -101,8 +99,9 @@ const removeItemUrl = "https://cors-anywhere.herokuapp.com/https://api.secureche
   // Remove Item API Delete
   let sku = '';
   const RemoveItemCall = async () =>{
-    const result = await axios.delete(`${removeItemMock} ${sku} `, config).then((res) => {
-        console.log("Removed Successfully" + JSON.stringify(res));
+    const result = await axios.delete(`${removeItemUrl} ${sku} `, config).then((res) => {
+        console.log("Removed Successfully");
+        console.log(res);
         FlashAlert();
       })
       .catch((err) => {
@@ -119,6 +118,7 @@ const removeItemUrl = "https://cors-anywhere.herokuapp.com/https://api.secureche
         />
 
         <Popover
+        className={props.classes.popover}
           id={id}
           open={open}
           anchorEl={anchorEl}
@@ -137,7 +137,7 @@ const removeItemUrl = "https://cors-anywhere.herokuapp.com/https://api.secureche
 
 
 
-
+          {/* Removed Item Success Alert */}
           <Collapse in={removedAlert}>
           <Alert severity="success">Removed from cart</Alert>
           </Collapse>
@@ -146,7 +146,7 @@ const removeItemUrl = "https://cors-anywhere.herokuapp.com/https://api.secureche
 
 
 
-            <Typography gutterBottom variant="h5" component="h2">
+            <Typography gutterBottom className={props.classes.cartHeader} align="center" variant="h5" >
               Cart
             </Typography>
             {cartSessionStorage.map(function (item, index) {
@@ -159,7 +159,7 @@ const removeItemUrl = "https://cors-anywhere.herokuapp.com/https://api.secureche
                   <Typography>Price: {item.price}</Typography>
 
                   {/* Delete Button Functions */}
-                  <Button
+                  <Button size="small"
                     onClick={() => {
                                          
                       var currentCartState = JSON.parse(
@@ -193,7 +193,7 @@ const removeItemUrl = "https://cors-anywhere.herokuapp.com/https://api.secureche
           underline="none"
           style={{ textDecoration: "none" }}
         >
-          <Button color={"primary"}>Checkout</Button>
+          <Button  color={"primary"}>Checkout</Button>
           </Link>
         </Popover>
       </div>
